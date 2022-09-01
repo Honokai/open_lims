@@ -13,6 +13,10 @@ interface ProviderProps {
 const ThemeContext = React.createContext<ContextProps>({} as ContextProps)
 
 export const ThemeContextProvider = ({children}: ProviderProps) => {
+  React.useEffect(() => {
+    console.log("ss")
+  }, [])
+
   const [ theme, setTheme ] = React.useState<"light"|"dark">(localStorage.getItem("preferredTheme") as "light"|"dark" ?? "light");
 
   function handleTheme()

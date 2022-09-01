@@ -52,12 +52,14 @@ const Navbar = () => {
                     id="composition-menu"
                     aria-labelledby="composition-button"
                   >
+                    <MenuItem onClick={handleMenu}>Sample</MenuItem>
+                    <MenuItem onClick={handleMenu}>SubSample</MenuItem>
+                    <MenuItem onClick={handleMenu}>Users</MenuItem>
+                    <MenuItem onClick={handleMenu}>Tests</MenuItem>
                     <MenuItem onClick={() => {
                       handleMenu()
                       handleTheme()
                     }}>Tema</MenuItem>
-                    <MenuItem onClick={handleMenu}>Sample</MenuItem>
-                    <MenuItem onClick={handleMenu}>SubSample</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
