@@ -10,12 +10,12 @@ const Home = () => {
       <Container sx={{ height: "100%", display: "flex", justifyContent: "center", flexDirection: "row", alignItems: "center"}}>
         <Box display="flex" justifyContent="center" flex={1}>
           <Typography>
-            Item 1
+            Schedule
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="center" flex={1}>
+        {/* <Box display="flex" justifyContent="center" flex={1}>
           2
-        </Box>
+        </Box> */}
       </Container>
     </Layout>
   )

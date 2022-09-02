@@ -2,6 +2,13 @@ import React from "react";
 import { AppBar, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from "../../contexts/Theme";
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+
+const NoStyleLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`
 
 const Navbar = () => {
 
@@ -53,7 +60,11 @@ const Navbar = () => {
                       id="composition-menu"
                       aria-labelledby="composition-button"
                     >
-                      <MenuItem onClick={handleMenu}>Sample</MenuItem>
+                      <MenuItem onClick={handleMenu}>
+                        <NoStyleLink to={"/sample/create"}>
+                          Sample
+                        </NoStyleLink>
+                      </MenuItem>
                       <MenuItem onClick={handleMenu}>SubSample</MenuItem>
                       <MenuItem onClick={handleMenu}>Users</MenuItem>
                       <MenuItem onClick={handleMenu}>Tests</MenuItem>
@@ -68,7 +79,9 @@ const Navbar = () => {
             )}
           </Popper>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Meu Teste
+            <NoStyleLink to={"/"}>
+              {process.env.REACT_APP_NAME}
+            </NoStyleLink>
           </Typography>
         </Toolbar>
       </AppBar>
