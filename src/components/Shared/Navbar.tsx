@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Box, ClickAwayListener, Grow, IconButton, List, ListItem, ListSubheader, MenuItem, MenuList, Paper, Popper, Toolbar, Typography } from "@mui/material";
+import { AppBar, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from "../../contexts/Theme";
 
@@ -17,7 +17,7 @@ const Navbar = () => {
 
   return (
     
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton 
             size="large"

@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { createTheme, Theme } from "@mui/material";
+import { createTheme } from "@mui/material";
 import React from "react";
 
 interface ContextProps {
@@ -21,7 +21,7 @@ export const ThemeContextProvider = ({children}: ProviderProps) => {
 
   function handleTheme()
   {
-    theme == "light" ? setTheme("dark") : setTheme("light");
+    theme === "light" ? setTheme("dark") : setTheme("light");
     
     localStorage.setItem("preferredTheme", theme);
   }

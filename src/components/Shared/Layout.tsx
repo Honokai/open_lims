@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import { ThemeContextProvider } from "../../contexts/Theme";
 import { Box } from "@mui/system";
-import { Container, ScopedCssBaseline, Toolbar } from "@mui/material"
+import { Container, ScopedCssBaseline } from "@mui/material"
 
 interface LayoutProps {
     children?: React.ReactNode
@@ -12,11 +12,9 @@ const Layout = (props: LayoutProps) => {
   return (
     <ThemeContextProvider>
       <ScopedCssBaseline enableColorScheme>
-        <Box height="100vh">
-          <Navbar/>
-          <Container disableGutters={true} maxWidth={false}>
-            {props.children}
-          </Container>
+        <Navbar/>
+        <Box height="100vh" sx={{paddingTop: "4rem"}}>
+          {props.children}
         </Box>
       </ScopedCssBaseline>
     </ThemeContextProvider>
