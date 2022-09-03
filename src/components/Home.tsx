@@ -1,39 +1,56 @@
 import { Box, Paper, Typography } from "@mui/material"
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2"
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import { Container } from "@mui/system"
 import React from "react"
 import Layout from "./Shared/Layout"
-import teste from "../db.json"
-import { UserProps } from "../Helpers/EntitiesData";
+import Table from "./Shared/Table";
+
+const users = [
+  {
+    id: 1,
+    nome: "Emerson Ferreira Fernandes",
+    cpf: "item 1111",
+    valor: "item 1111",
+    papel: "Recepção"
+  },
+  {
+    id: 2,
+    nome: "Lucas Herreira",
+    cpf: "Meu cpf",
+    valor: "item 222",
+    papel: "Teste"
+  },
+  {
+    id: 3,
+    nome: "Porta dos testes",
+    cpf: "item 123",
+    valor: "item 4322",
+    papel: "Corma"
+  },
+  {
+    id: 4,
+    nome: "Tormar",
+    cpf: "item 5431234",
+    valor: "item 213213",
+    papel: "Recepção"
+  },
+  {
+    id: 5,
+    nome: "Emerson Ferreira Fernandes",
+    cpf: "item 1232555",
+    valor: "item 555333",
+    papel: "Nutri"
+  },
+]
 
 const Home = () => {
-  // let rows: GridRowsProp = []
-  const [ rows, setRows ] = React.useState<GridRowsProp>([])
-
-  // React.useEffect(() => {
-  //   let t: UserProps[] = []
-  //   teste.users.forEach(user => {
-  //     return t.push(user)
-  //   })
-  //   setRows(t)
-  // }, [])
-
-  // const columns: GridColDef[] = [
-  //   { field: 'id', headerName: 'ID'},
-  //   { field: 'name', headerName: 'Nome'},
-  //   { field: 'email', headerName: 'E-mail'},
-  // ];
-
   return (
     <Layout>
-      <Container sx={{ height: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
+      <Container sx={{ height: "100%"}}>
         <Typography variant="h4" paragraph>
             Schedule
         </Typography>
-        <Box display="flex" justifyContent={"center"} flex={1} width={"80%"}>
-          {/* <DataGrid rows={rows} columns={columns} /> */}
-        </Box>
+        <Table Sortable={true} ColumnHeaders={["ID", "Nome", "CPF", "Valor", "Papel",]} RowData={users}/>
         {/* <Box display="flex" justifyContent="center" flex={1}>
           2
         </Box> */}
