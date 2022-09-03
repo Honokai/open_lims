@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 import { Container, ScopedCssBaseline } from "@mui/material"
 
 interface LayoutProps {
-    children?: React.ReactNode
+  children?: React.ReactNode
 }
 
 const Layout = (props: LayoutProps) => {
