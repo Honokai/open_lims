@@ -1,7 +1,6 @@
 import styled from "@emotion/styled"
 import { ArrowDownward } from "@mui/icons-material"
 import { IconButton } from "@mui/material"
-import { keyboard } from "@testing-library/user-event/dist/keyboard"
 import React, { CSSProperties, useEffect } from "react"
 
 interface TableProps {
@@ -15,6 +14,9 @@ const DivLikeTable = styled.div`
   padding: .5rem 1rem;
   border-radius: .2rem;
   border: 1px solid gray;
+  #body > div:nth-child(even) {
+    background-color: gray;
+  }
 `
 
 const DivLikeThead = styled.div`
@@ -30,13 +32,14 @@ const DivLikeTbody = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
+
 `
 
 const DivLikeRow = styled.div`
   display: flex;
   * {
     flex: 1;
-  } 
+  }
 `
 
 const Table = ({ColumnHeaders, RowData, Sortable}: TableProps) => {
@@ -63,7 +66,7 @@ const Table = ({ColumnHeaders, RowData, Sortable}: TableProps) => {
         })
       }
       </DivLikeThead>
-      <DivLikeTbody>
+      <DivLikeTbody id="body">
       {
         filter == "" ?
         RowData.map(item => (
