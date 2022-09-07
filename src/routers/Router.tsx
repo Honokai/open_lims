@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import Home from "../components/Home";
-import Page404 from "../components/Page404";
+import Page404 from "../components/Errors/Page404";
 import SampleCreate from "../components/Sample/Create";
 import Layout from "../components/Shared/Layout";
 import { TableContextProvider } from "../contexts/useTable";

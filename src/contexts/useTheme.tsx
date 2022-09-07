@@ -45,15 +45,44 @@ export const Tema = {
           main: '#135FD4',
         }
       },
+      typography: {
+        fontFamily: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(',')
+      }
   }),
   dark: createTheme({
       palette: {
         mode: 'dark',
+        secondary: {
+          main: '#898989',
+        },
         background: {
           default: '#222'
-        }
+        },
       },
-  })
+      typography: {
+        fontFamily: [
+          '"Roboto Slab Light"',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          '"Helvetica Neue"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(',')
+      }
+  }),
 }
 
 export function useTema() {
