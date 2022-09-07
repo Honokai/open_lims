@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import { ArrowDownward } from "@mui/icons-material";
-import { IconButton, Checkbox } from "@mui/material";
+import { IconButton, Checkbox, TextField, Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useTable } from "../../contexts/useTable";
 import { FormatColumn } from "../../Helpers/Functions";
+import { InputFilter } from "./InputsFilter";
 
 interface TableProps {
   ColumnHeaders: Array<string>
@@ -45,12 +46,33 @@ interface CheckboxProps {
 }
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) => {
-  const {data, loadData, ordering, checkboxes, handleCheckBox, loadStatusFilter} = useTable()
-  
+  const { data, loadData, ordering, checkboxes, handleCheckBox, loadStatusFilter} = useTable()
+  const [ timer, setTimer ] = React.useState(0);
+  // const [searchColumns, setSearchColumns] = React.useState(ColumnHeaders)
+
   React.useEffect(() => {
     loadStatusFilter(ColumnHeaders)
     loadData(RowData)
   }, [])
+
+  // function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
+  // {
+  //   setSearchInput(event.currentTarget.value)
+  //   search(event)
+  // }
+  function search(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
+  {
+    clearTimeout(timer)
+
+    setTimer(setTimeout(() => {
+      console.log(event)
+    }, 5000, event))
+  }
+
+  function originalData()
+  {
+    console.log(RowData)
+  }
 
   const DivLikeTable = styled.div`
     flex: 1;
@@ -64,9 +86,12 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
     //   background-color: ${Theme === 'light' ? "#d4d4d4" : "rgba(77,77,77,0.8)"};
     //   color: ${Theme === 'light' ? "inherit" : "#fff"};
     // }
-`
+  `
+
   return (
+    
     <DivLikeTable>
+      <Button onClick={originalData}>Original data</Button>
       <DivLikeThead>
       <div>
         <Checkbox
@@ -92,6 +117,18 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
           )
         })
       }
+      </DivLikeThead>
+      <DivLikeThead>
+        <div>
+          
+        </div>
+        {
+          ColumnHeaders.map((columnName, index) => {
+            return (
+              <InputFilter columnName={columnName}/>
+            )
+          })
+        }
       </DivLikeThead>
       <DivLikeTbody id="body">
       {

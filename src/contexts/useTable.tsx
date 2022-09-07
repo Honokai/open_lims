@@ -12,6 +12,7 @@ interface ContextProps {
   loadStatusFilter: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
+  // search: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
 }
 
 interface ProviderProps {
@@ -86,7 +87,6 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
       </TableContext.Provider>
   )
 }
-
 
 export const useTable = () => {
   const context = React.useContext(TableContext)
