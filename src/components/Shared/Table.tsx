@@ -46,12 +46,8 @@ interface CheckboxProps {
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) => {
   const {data, loadData, ordering, checkboxes, handleCheckBox, loadStatusFilter} = useTable()
-  // const [ data, setData ] = React.useState(RowData)
-  // const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
-  // const [ statusFilter, setStatusFilter ] = React.useState<Object>(ColumnHeaders);
   
   React.useEffect(() => {
-    console.log(typeof RowData)
     loadStatusFilter(ColumnHeaders)
     loadData(RowData)
   }, [])
@@ -69,55 +65,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
     //   color: ${Theme === 'light' ? "inherit" : "#fff"};
     // }
 `
-
-  // function ordering(colunaFiltrada: string)
-  // {
-  //   let t: Object[] = []
-
-  //   Object.assign(t, data)
-
-  //   t.sort((i1, i2) => {
-  //     // @ts-ignore: Unreachable code error 
-  //     if (i1[colunaFiltrada] < i2[colunaFiltrada]) {
-  //       return -1
-  //     }
-  //     // @ts-ignore: Unreachable code error
-  //     if (i1[colunaFiltrada] > i2[colunaFiltrada]) {
-  //       return 1
-  //     }
-
-  //     return 0
-  //   })
-  //   // @ts-ignore: Unreachable code error
-  //   if (statusFilter[colunaFiltrada]?.order === "asc") {
-  //     t.reverse()
-  //   }
-
-  //   setData(t)
-
-  //   setStatusFilter({
-  //     ...statusFilter,
-  //     [colunaFiltrada]: {
-  //       // @ts-ignore: Unreachable code error
-  //       order: statusFilter[colunaFiltrada]?.order === "asc" ? "desc" : "asc",
-  //       search: ""
-  //     }
-  //   })
-  // }
-
-  // function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>, all = false) 
-  // {
-  //   event && !all ? setCheckboxes({
-  //     ...checkboxes,
-  //     [event.currentTarget.id]: event.currentTarget.checked
-  //   }) : setCheckboxes({
-  //     ...checkboxes,
-  //     checkAll: event.currentTarget.checked
-  //   })
-
-  //   console.log(checkboxes, event.currentTarget.id)
-  // }
-
   return (
     <DivLikeTable>
       <DivLikeThead>
