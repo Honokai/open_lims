@@ -16,6 +16,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme}: TableProps) => {
 
   const DivLikeTable = styled.div`
     flex: 1;
+    min-width: 500px;
     margin: 0 1rem;
     padding: .5rem 1rem;
     border-radius: .2rem;

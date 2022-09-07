@@ -55,6 +55,7 @@ const Login = () => {
             <Typography variant="h5" margin={".5rem 0"}>Sign in</Typography>
             <div style={{margin: ".7rem 0"}}>
                 <TextField
+                  fullWidth
                   size="small"
                   required
                   error={inputs.username.invalid}
@@ -70,6 +71,7 @@ const Login = () => {
             </div>
             <div style={{margin: ".7rem 0"}}>
               <TextField
+                fullWidth
                 size="small"
                 required
                 error={inputs.password.invalid}
@@ -84,9 +86,12 @@ const Login = () => {
               />
             </div>
             <FlexCenteredDiv>
-            <Link component={RouterLink} to={"/register"} variant="body2" underline="none">
-              Not registered? Sign up now.
-            </Link>
+              <Link sx={{margin: "0 .3rem"}} component={RouterLink} to={"/register"} variant="body2" underline="none">
+                Forgot password?
+              </Link>|
+              <Link sx={{margin: "0 .3rem"}} component={RouterLink} to={"/register"} variant="body2" underline="none">
+                Create account
+              </Link>
             </FlexCenteredDiv>
             <FlexCenteredDiv>
               <Button onClick={validate} variant="outlined">Sign in</Button>

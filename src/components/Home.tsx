@@ -12,7 +12,7 @@ const Home = () => {
     <Layout>
       <Container sx={{ height: "100%"}}>
         <Typography variant="h4" paragraph>
-            Schedule {theme}
+            Schedule
         </Typography>
         <Table Sortable={true} ColumnHeaders={["ID", "Nome", "CPF", "Valor", "Papel",]} RowData={users} Theme={theme}/>
       </Container>

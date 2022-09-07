@@ -11,4 +11,8 @@ export const FlexCenteredDiv = styled.div`
   display: flex;
   padding: .2rem 0;
   justify-content: center;
+  & *: {
+    margin: 0 2rem;
+    color: white !important;
+  }
 `
