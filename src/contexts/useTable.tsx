@@ -8,11 +8,11 @@ interface ContextProps {
   data: Object[]
   checkboxes: CheckboxProps
   handleCheckBox: (event: React.ChangeEvent<HTMLInputElement>, all?: boolean) => void
-  statusFilter: Object
+  statusFilter: {[key: string]: any}
   loadStatusFilter: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
-  // search: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
+  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
 }
 
 interface ProviderProps {
@@ -24,7 +24,11 @@ const TableContext = React.createContext<ContextProps>({} as ContextProps)
 export const TableContextProvider = ({ children }: ProviderProps) => {
   const [ data, setData ] = React.useState<Array<Object>>([{}])
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
-  const [ statusFilter, setStatusFilter ] = React.useState<Object>({});
+  const [ statusFilter, setStatusFilter ] = React.useState<{[key: string]: any}>({search: {}});
+
+  React.useEffect(() => {
+    console.log("Renderizei")
+  }, [])
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
     event && !all ? setCheckboxes({
@@ -36,9 +40,10 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     })
   }
 
-  function loadStatusFilter(statusFilter: Object)
+  function loadStatusFilter(filters: Object)
   {
-    setStatusFilter(statusFilter)
+    console.log(filters)
+    setStatusFilter(filters)
   }
 
   function loadData(d: Array<Object>)
@@ -81,8 +86,17 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     })
   }
 
+  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
+    setStatusFilter({
+      ...statusFilter,
+      search: {
+        [event.currentTarget.name]: event.currentTarget.value
+      }
+    })
+  }
+
   return(
-      <TableContext.Provider value={{data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
+      <TableContext.Provider value={{handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
         {children}
       </TableContext.Provider>
   )

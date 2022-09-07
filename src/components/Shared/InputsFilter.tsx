@@ -1,28 +1,27 @@
 import React from "react";
 import { TextField } from "@mui/material";
+import { useTable } from "../../contexts/useTable";
 
 interface InputProps {
   columnName: string
 }
 
-export const InputFilter = ({ columnName }: InputProps) => {
+export const InputFilter = ({ columnName}: InputProps) => {
+  const {statusFilter, handleInputSearch} = useTable()
   const [searchInput, setSearchInput] = React.useState("")
 
-  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
-  {
-    setSearchInput(event.currentTarget.value)
-    // search(event)
-  }
+  // React.useEffect(() => {
+  //   console.log(statusFilter)
+  // }, [statusFilter])
 
   return(
-    <div key={columnName}>
+    <div>
       <TextField
         name={`${columnName}`}
         sx={{margin: "0 .4rem"}} 
         size="small" placeholder={`${columnName.toUpperCase()}`}
-
-        // value={handleInputSearch}
-        defaultValue={searchInput}
+        // @ts-ignore: Unreachable code error
+        value={statusFilter.search[columnName] ?? ""}
         onChange={(e) => handleInputSearch(e)}
       />
     </div>

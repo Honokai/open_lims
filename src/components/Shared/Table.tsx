@@ -46,12 +46,12 @@ interface CheckboxProps {
 }
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) => {
-  const { data, loadData, ordering, checkboxes, handleCheckBox, loadStatusFilter} = useTable()
+  const { data, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
   const [ timer, setTimer ] = React.useState(0);
   // const [searchColumns, setSearchColumns] = React.useState(ColumnHeaders)
 
   React.useEffect(() => {
-    loadStatusFilter(ColumnHeaders)
+    loadStatusFilter({...statusFilter, ColumnHeaders})
     loadData(RowData)
   }, [])
 
@@ -125,7 +125,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
         {
           ColumnHeaders.map((columnName, index) => {
             return (
-              <InputFilter columnName={columnName}/>
+              <InputFilter key={`inputFilter[${columnName}]`} columnName={columnName}/>
             )
           })
         }
