@@ -60,87 +60,87 @@ const SampleCreate = () => {
           Sample
         </Typography>
         <ContainerStyled>
-        <StyledDiv>
-          <TextField
-            size="small"
-            required
-            name="externalID"
-            id="outlined-required"
-            label="External ID"
-            defaultValue=""
-            onChange={(e) => handleChange(e)}
-            sx={{ flex: 1}}
-          />
-          <FormControl sx={{ minWidth: 120}} size="small">
-            <InputLabel id="demo-select-small">Sample Type</InputLabel>
-            <Select
-              name="sampleType"
-              labelId="demo-select-small"
-              id="demo-select-small"
-              defaultValue={10}
-              label="Age"
-              onChange={(e, child) => handleSelectChange(e, child)}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 120}} size="small">
-            <InputLabel id="demo-select-small">Client</InputLabel>
-            <Select
-              labelId="demo-select-small"
-              id="demo-select-small"
-              defaultValue={10}
-              label="Age"
-              // onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
-            </Select>
-          </FormControl>
-        </StyledDiv>
-        <StyledDiv>
-          <TextField
-            size="small"
-            required
-            type="date"
-            id="outlined-required"
-            InputLabelProps={{ shrink: true, required: true }}
-            label="Received"
-            defaultValue={FormatDateToISO()}
-          />
-          <TextField
-            size="small"
-            required
-            id="outlined-required"
-            label="Required"
-            defaultValue={FormatDateToISO(new Date("10/02/2022"))}
-          />
-        </StyledDiv>
-        <StyledDiv>
-          <TextField
-            size="small"
-            required
-            id="outlined-required"
-            label="Required"
-            defaultValue=""
-          />
-          <TextField
-            size="small"
-            required
-            id="outlined-required"
-            label="Required"
-            defaultValue=""
-          />
-        </StyledDiv>
+          <StyledDiv>
+            <TextField
+              size="small"
+              required
+              name="externalID"
+              id="outlined-required"
+              label="External ID"
+              defaultValue=""
+              onChange={(e) => handleChange(e)}
+              sx={{ flex: 1}}
+            />
+            <FormControl sx={{ minWidth: 120}} size="small">
+              <InputLabel id="demo-select-small">Sample Type</InputLabel>
+              <Select
+                name="sampleType"
+                labelId="demo-select-small"
+                id="demo-select-small"
+                defaultValue={10}
+                label="Age"
+                onChange={(e, child) => handleSelectChange(e, child)}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ minWidth: 120}} size="small">
+              <InputLabel id="demo-select-small">Client</InputLabel>
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                defaultValue={10}
+                label="Age"
+                // onChange={handleChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
+              </Select>
+            </FormControl>
+          </StyledDiv>
+          <StyledDiv>
+            <TextField
+              size="small"
+              required
+              type="date"
+              id="outlined-required"
+              InputLabelProps={{ shrink: true, required: true }}
+              label="Received"
+              defaultValue={FormatDateToISO()}
+            />
+            <TextField
+              size="small"
+              required
+              id="outlined-required"
+              label="Required"
+              defaultValue={FormatDateToISO(new Date("10/02/2022"))}
+            />
+          </StyledDiv>
+          <StyledDiv>
+            <TextField
+              size="small"
+              required
+              id="tgest"
+              label="Required"
+              defaultValue=""
+            />
+            <TextField
+              size="small"
+              required
+              id="NomeQualquer"
+              label="Required"
+              defaultValue=""
+            />
+          </StyledDiv>
         </ContainerStyled>
       </Container>
       {/* <Grid2 container padding={1}>

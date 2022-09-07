@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material";
 import React from "react";
 
 interface ContextProps {
+  theme: "light"|"dark"
   handleTheme: () => void
 }
 
@@ -10,14 +11,15 @@ interface ProviderProps {
   children: React.ReactNode
 }
 
-const ThemeContext = React.createContext<ContextProps>({} as ContextProps)
+export const ThemeContext = React.createContext<ContextProps>({} as ContextProps)
 
 export const ThemeContextProvider = ({children}: ProviderProps) => {
-  const [ theme, setTheme ] = React.useState<"light"|"dark">(localStorage.getItem("preferredTheme") === null ? "dark" : "light");
-
+  const [ theme, setTheme ] = React.useState<"light"|"dark">(localStorage.getItem("preferredTheme") !== null && localStorage.getItem("preferredTheme") !== "light" ? "dark" : "light");
+  
   React.useEffect(() => {
-    localStorage.setItem("preferredTheme", theme)
+    localStorage.setItem("preferredTheme", theme);
   }, [theme])
+  
 
   function handleTheme()
   {
@@ -26,7 +28,7 @@ export const ThemeContextProvider = ({children}: ProviderProps) => {
 
   return (
     <ThemeContext.Provider
-      value={{handleTheme}}
+      value={{handleTheme, theme}}
     >
       <ThemeProvider theme={Tema[theme]}>
         { children }
@@ -35,7 +37,7 @@ export const ThemeContextProvider = ({children}: ProviderProps) => {
   )
 }
 
-const Tema = {
+export const Tema = {
   light: createTheme({
       palette: {
         mode: 'light',
@@ -54,8 +56,12 @@ const Tema = {
   })
 }
 
-export function useTheme() {
+export function useTema() {
   const context = React.useContext(ThemeContext)
+
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider')
+  }
 
   return context
 }

@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "./Navbar";
-import { ThemeContextProvider } from "../../contexts/Theme";
+import { Tema, ThemeContext, ThemeContextProvider, useTema } from "../../contexts/useTheme";
 import { Box } from "@mui/system";
-import { Container, ScopedCssBaseline } from "@mui/material"
+import { ScopedCssBaseline, ThemeProvider } from "@mui/material"
 
 interface LayoutProps {
   children?: React.ReactNode
 }
 
 const Layout = (props: LayoutProps) => {
+  const { theme } = useTema()
+
   return (
-    <ThemeContextProvider>
+    <ThemeProvider theme={Tema[theme]}>
       <ScopedCssBaseline enableColorScheme>
         <Navbar/>
-        <Box height="100vh" sx={{paddingTop: "4rem"}}>
+        <Box height="100vh" sx={{paddingTop: "4rem", overflow: "auto"}}>
           {props.children}
         </Box>
       </ScopedCssBaseline>
-    </ThemeContextProvider>
+      </ThemeProvider>
+    // </ThemeContextProvider>
   )
 }
 

@@ -1,18 +1,18 @@
 import React from "react";
 import { AppBar, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import { useTheme } from "../../contexts/Theme";
+import { useTema } from "../../contexts/useTheme";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
-const NoStyleLink = styled(Link)`
+export const NoStyleLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 `
 
 const Navbar = () => {
 
-  const { handleTheme } = useTheme()
+  const { handleTheme } = useTema()
 
   const [ aberto, setAberto ] = React.useState<boolean>(false)
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -60,18 +60,37 @@ const Navbar = () => {
                       id="composition-menu"
                       aria-labelledby="composition-button"
                     >
-                      <MenuItem onClick={handleMenu}>
-                        <NoStyleLink to={"/sample/create"}>
+                      <MenuItem disableGutters>
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/sample/create"}>
                           Sample
                         </NoStyleLink>
                       </MenuItem>
-                      <MenuItem onClick={handleMenu}>SubSample</MenuItem>
-                      <MenuItem onClick={handleMenu}>Users</MenuItem>
-                      <MenuItem onClick={handleMenu}>Tests</MenuItem>
+                      <MenuItem disableGutters onClick={handleMenu}>
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                          SubSample
+                        </NoStyleLink>
+                      </MenuItem>
+                      <MenuItem disableGutters onClick={handleMenu}>
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                        Users
+                        </NoStyleLink>
+                      </MenuItem>
+                      <MenuItem disableGutters onClick={handleMenu}>
+                      <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                      Tests
+                        </NoStyleLink>
+                      </MenuItem>
+                      <MenuItem disableGutters>
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                          Login
+                        </NoStyleLink>
+                      </MenuItem>
                       <MenuItem onClick={() => {
                         handleMenu()
                         handleTheme()
-                      }}>Tema</MenuItem>
+                      }}>
+                        Tema
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

@@ -1,22 +1,30 @@
-import styled from "@emotion/styled"
-import { ArrowDownward } from "@mui/icons-material"
-import { IconButton } from "@mui/material"
-import React, { CSSProperties, useEffect } from "react"
+import styled from "@emotion/styled";
+import { ArrowDownward } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import React from "react";
 
 interface TableProps {
   ColumnHeaders: Array<string>
   RowData: Array<Object>
   Sortable?: boolean
+  Theme: "light"|"dark"
 }
 
-const DivLikeTable = styled.div`
-  flex: 1;
-  padding: .5rem 1rem;
-  border-radius: .2rem;
-  border: 1px solid gray;
-  #body > div:nth-child(even) {
-    background-color: gray;
-  }
+const Table = ({ColumnHeaders, RowData, Sortable, Theme}: TableProps) => {
+  const [ data, setData ] = React.useState(RowData)
+  const [ statusFilter, setStatusFilter ] = React.useState<Object>(ColumnHeaders);
+
+  const DivLikeTable = styled.div`
+    flex: 1;
+    margin: 0 1rem;
+    padding: .5rem 1rem;
+    border-radius: .2rem;
+    border: 1px solid gray;
+    overflow: auto;
+    #body > div:nth-child(even) {
+      background-color: ${Theme === 'light' ? "#d4d4d4" : "rgba(77,77,77,0.8)"};
+      color: ${Theme === 'light' ? "inherit" : "#fff"};
+    }
 `
 
 const DivLikeThead = styled.div`
@@ -32,32 +40,63 @@ const DivLikeTbody = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-
 `
 
 const DivLikeRow = styled.div`
   display: flex;
+  border-radius: 0.2rem;
   * {
     flex: 1;
   }
 `
 
-const Table = ({ColumnHeaders, RowData, Sortable}: TableProps) => {
-  const [ filter, setFilter ] = React.useState<string>("");
-  const [ statusFilter, setStatusFilter ] = React.useState<Object[]>([]);
-  
+  function ordering(colunaFiltrada: string)
+  {
+    let t: Object[] = []
+
+    Object.assign(t, data)
+
+    t.sort((i1, i2) => {
+      // @ts-ignore: Unreachable code error
+      if (i1[colunaFiltrada] < i2[colunaFiltrada]) {
+        return -1
+      }
+      // @ts-ignore: Unreachable code error
+      if (i1[colunaFiltrada] > i2[colunaFiltrada]) {
+        return 1
+      }
+
+      return 0
+    })
+    // @ts-ignore: Unreachable code error
+    if (statusFilter[colunaFiltrada]?.order === "asc") {
+      t.reverse()
+    }
+
+    setData(t)
+
+    setStatusFilter({
+      ...statusFilter,
+      [colunaFiltrada]: {
+        // @ts-ignore: Unreachable code error
+        order: [statusFilter[colunaFiltrada]?.order] === "asc" ? "desc" : "asc",
+        search: ""
+      }
+    })
+  }
+
   return (
     <DivLikeTable>
       <DivLikeThead>
       {
-        ColumnHeaders.map(column => {
+        ColumnHeaders.map((columnName, index) => {
           return (
-            <div>
-              {column}
+            <div key={columnName}>
+              {columnName}
               {
                 Sortable ? (
-                  <IconButton size="small" onClick={(e) => setFilter(column.toLowerCase())}>
-                    <ArrowDownward></ArrowDownward>
+                  <IconButton key={`${columnName}[button]`} size="small" onClick={(e) => ordering(columnName.toLowerCase())}>
+                    <ArrowDownward/>
                   </IconButton>
                 ) : ""
               }
@@ -68,38 +107,13 @@ const Table = ({ColumnHeaders, RowData, Sortable}: TableProps) => {
       </DivLikeThead>
       <DivLikeTbody id="body">
       {
-        filter == "" ?
-        RowData.map(item => (
-          <DivLikeRow>
+        data.map((item, index) => (
+          <DivLikeRow key={`${index}`}>
           {
-            Object.entries(item).map((i) => {
+            Object.entries(item).map((v, i) => {
               return (
-                <div>
-                  {i[1]}
-                </div>
-              )
-            })
-          }
-          </DivLikeRow>
-        )) :
-        RowData.sort((i1, i2) => {
-          // @ts-ignore: Unreachable code error
-          if (i1[filter] < i2[filter]) {
-            return -1
-          } 
-          // @ts-ignore: Unreachable code error
-          if (i1[filter] > i2[filter]) {
-            return 1
-          }
-
-          return 0
-        }).map(item => (
-          <DivLikeRow>
-          {
-            Object.entries(item).map((i) => {
-              return (
-                <div>
-                  {i[1]}
+                <div key={`${index}[${i}]`} id={`${index}[${i}]`}>
+                  {v[1]}
                 </div>
               )
             })
@@ -109,7 +123,9 @@ const Table = ({ColumnHeaders, RowData, Sortable}: TableProps) => {
       }
       </DivLikeTbody>
       <div>
-        <h1>MEU FOOTER</h1>
+        <h4 >
+          Exibindo {RowData.length}
+        </h4>
       </div>
     </DivLikeTable>
   )
