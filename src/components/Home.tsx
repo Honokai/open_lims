@@ -1,20 +1,28 @@
+import React from "react"
 import { Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import users from "./users.json"
+import schedule from "./schedules.json"
+import mySchedule from "./mySchedules.json"
 import Layout from "./Shared/Layout"
 import Table from "./Shared/Table";
 import { useTema } from "../contexts/useTheme"
 
 const Home = () => {
   const { theme } = useTema()
-
+  let teste = true
   return (
     <Layout>
-      <Container sx={{ height: "100%"}}>
+      <Container sx={{height: "100%", padding: "3rem 0"}}>
         <Typography variant="h4" paragraph>
-            Schedule
+            Welcome, [username]
         </Typography>
-        <Table Sortable={true} ColumnHeaders={["ID", "Nome", "CPF", "Valor", "Papel",]} RowData={users} Theme={theme}/>
+        {teste ? (
+          <Table Sortable={true} ColumnHeaders={Object.keys(schedule[0])} RowData={schedule} Theme={theme}/>
+        ) : (
+          <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} />
+        )}
+        
       </Container>
     </Layout>
   )
