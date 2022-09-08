@@ -42,7 +42,6 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
   function loadStatusFilter(filters: Object)
   {
-    console.log(filters)
     setStatusFilter(filters)
   }
 
@@ -90,7 +89,8 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     setStatusFilter({
       ...statusFilter,
       search: {
-        [event.currentTarget.name]: event.currentTarget.value
+        ...statusFilter.search,
+        [event.target.name]: event.target.value
       }
     })
   }

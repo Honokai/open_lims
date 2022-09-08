@@ -125,7 +125,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
         {
           ColumnHeaders.map((columnName, index) => {
             return (
-              <InputFilter key={`inputFilter[${columnName}]`} columnName={columnName}/>
+              <InputFilter value={statusFilter.search[columnName] ?? null} key={`inputFilter[${columnName}]`} columnName={columnName}/>
             )
           })
         }
