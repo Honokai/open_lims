@@ -13,6 +13,7 @@ const Home = () => {
   const { theme } = useTema()
   const { statusFilter } = useTable()
   let teste = true
+
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
@@ -20,7 +21,7 @@ const Home = () => {
             Welcome, {statusFilter.search['client']}
         </Typography>
         {teste ? (
-          <Table Sortable={true} ColumnHeaders={Object.keys(schedule[0])} RowData={schedule} Theme={theme}/>
+          <Table Sortable={true} ColumnHeaders={Object.keys(schedule[0])} showCheckbox={true} RowData={schedule} Theme={theme}/>
         ) : (
           <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} />
         )}

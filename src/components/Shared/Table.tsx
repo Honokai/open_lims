@@ -12,6 +12,7 @@ interface TableProps {
   Sortable?: boolean
   Theme?: "light"|"dark"
   Striped?: boolean
+  showCheckbox?: boolean
 }
 
 const DivLikeThead = styled.div`
@@ -45,7 +46,7 @@ interface CheckboxProps {
   [key: string]: any;
 }
 
-const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) => {
+const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
   const { data, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
   const [ timer, setTimer ] = React.useState(0);
   // const [searchColumns, setSearchColumns] = React.useState(ColumnHeaders)
@@ -53,7 +54,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
   React.useEffect(() => {
     loadStatusFilter({...statusFilter, ColumnHeaders})
     loadData(RowData)
-  }, [])
+  }, [RowData])
 
   // function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
   // {
@@ -93,14 +94,19 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
     <DivLikeTable>
       <Button onClick={originalData}>Original data</Button>
       <DivLikeThead>
-      <div>
-        <Checkbox
-          key={`all`}
-          checked={checkboxes?.checkAll}
-          onChange={(e) => handleCheckBox(e, true)}
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-      </div>
+        {
+          showCheckbox ? (
+            <div>
+            <Checkbox
+              key={`all`}
+              checked={checkboxes?.checkAll}
+              onChange={(e) => handleCheckBox(e, true)}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+          </div>
+          ): ""
+        }
+      
       {
         ColumnHeaders.map((columnName, index) => {
           return (
@@ -119,9 +125,13 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
       }
       </DivLikeThead>
       <DivLikeThead>
-        <div>
-          
-        </div>
+        {
+          showCheckbox ? (
+            <div>
+            
+            </div>
+          ): ""
+        }
         {
           ColumnHeaders.map((columnName, index) => {
             return (
@@ -134,17 +144,21 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
       {
         data.map((item, index) => (
           <DivLikeRow key={`row[${index}]`}>
-            <div>
-              <Checkbox
-                disableRipple
-                key={`checkbox[${index}]`}
-                id={`checkbox[${index}]`}
-                value={index}
-                checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
-                onChange={(e) => handleCheckBox(e)}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-            </div>
+            {
+              showCheckbox ? (
+                <div>
+                <Checkbox
+                  disableRipple
+                  key={`checkbox[${index}]`}
+                  id={`checkbox[${index}]`}
+                  value={index}
+                  checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
+                  onChange={(e) => handleCheckBox(e)}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              </div>
+              ) : ""
+            }
           {
             Object.entries(item).map((v, i) => {
               return (
@@ -160,7 +174,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped}: TableProps) =
       </DivLikeTbody>
       <div>
         <h4>
-          Exibindo {RowData.length}
+          Exibindo {data.length}
         </h4>
       </div>
     </DivLikeTable>
