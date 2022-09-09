@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { ArrowDownward } from "@mui/icons-material";
 import { IconButton, Checkbox, TextField, Button } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { useTable } from "../../contexts/useTable";
@@ -44,11 +45,8 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
-    // setTimeout(() => {
-      loadStatusFilter({...statusFilter, ColumnHeaders})
-      loadData(RowData ?? [])
-    // }, 2000)
-    
+    loadStatusFilter({...statusFilter, ColumnHeaders})
+    loadData(RowData ?? [])
   }, [RowData])
 
   function addRow()
@@ -89,9 +87,11 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   `
 
   return (
-    
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
+      <LoadingButton loading variant="outlined">
+        Submit
+      </LoadingButton>
       <DivLikeThead>
         {
           showCheckbox ? (
@@ -113,7 +113,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
               {FormatColumn(columnName)}
               {
                 Sortable ? (
-                  <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={(e) => ordering(columnName.toLowerCase())}>
+                  <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={() => ordering(columnName.toLowerCase())}>
                     <ArrowDownward/>
                   </IconButton>
                 ) : ""

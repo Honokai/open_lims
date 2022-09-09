@@ -5,6 +5,7 @@ import { CheckboxProps, dataListType, GenericObjectKeyType, OrderingProps, Provi
 const TableContext = React.createContext<TableContextProps>({} as TableContextProps)
 
 export const TableContextProvider = ({ children }: ProviderProps) => {
+  const [loading, setLoading] = React.useState(false)
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: []} as dataListType)
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
   const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
@@ -68,14 +69,14 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
   function handleDataAddition(dataAdded: string[])
   {
-    let b = {}
-    let t: Object[] = []
+    // let b = {}
+    // let t: Object[] = []
 
-    dataAdded.forEach((val) => {
-      Object.assign(b, {[val]: ""})
-    })
+    // dataAdded.forEach((val) => {
+    //   Object.assign(b, {[val]: ""})
+    // })
 
-    t = t.concat(data).concat(b)
+    // t = t.concat(data).concat(b)
 
     // setData(t)
   }
@@ -91,7 +92,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   }
 
   return(
-      <TableContext.Provider value={{handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
+      <TableContext.Provider value={{loading, handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
         {children}
       </TableContext.Provider>
   )
