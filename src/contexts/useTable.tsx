@@ -9,7 +9,8 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: []} as dataListType)
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
   const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
-  const [ statusFilter, setStatusFilter ] = React.useState<GenericObjectKeyType>({ordering: {column: '', order: 'asc'}, search: {}});
+  const [ statusFilter, setStatusFilter ] = React.useState<GenericObjectKeyType>({search: {}});
+  const [timer, setTimer] = React.useState(0)
 
   React.useEffect(() => {
     if(Object.keys(statusFilter.search).length) {
@@ -32,16 +33,12 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   }, [statusFilter])
 
   React.useEffect(() => {
-    setLoading(true)
-    if (resultOrdering.column !== '')
+    if (resultOrdering.column !== '') {
       setData({
         ...data,
         filteredList: shouldOrder(data.filteredList, resultOrdering.column, resultOrdering.ordering)
       })
-    
-    setTimeout(() => {
-      setLoading(false)
-    }, 5000)
+    }
   }, [resultOrdering])
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
@@ -86,7 +83,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     // setData(t)
   }
 
-  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {
+  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {    
     setStatusFilter({
       ...statusFilter,
       search: {

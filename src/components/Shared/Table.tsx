@@ -8,6 +8,7 @@ import { useTable } from "../../contexts/useTable";
 import { FormatColumn } from "../../Helpers/Functions";
 import { TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
+import ButtonLoading from "./ButtonLoading";
 
 const DivLikeThead = styled.div`
   padding: .3rem 0;
@@ -89,11 +90,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   return (
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
-      {loading === true ? 
-        <LoadingButton loading variant="text">
-          T
-        </LoadingButton> : ""
-      }
+      <ButtonLoading/>
       <DivLikeThead>
         {
           showCheckbox ? (
@@ -148,7 +145,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
           <DivLikeRow key={`row[${index}]`}>
             {
               showCheckbox ? (
-                <div>
+                <div style={{flex: '1'}}>
                   <Checkbox
                     disableRipple
                     key={`checkbox[${index}]`}

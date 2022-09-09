@@ -2,6 +2,7 @@ import React from "react"
 import { Typography } from "@mui/material"
 import { Container } from "@mui/system"
 import users from "./users.json"
+import test from "./test.json"
 import schedule from "./schedules.json"
 import mySchedule from "./mySchedules.json"
 import Layout from "./Shared/Layout"
@@ -21,7 +22,7 @@ const Home = () => {
             Welcome, {statusFilter.search['client']}
         </Typography>
         {teste ? (
-          <Table Sortable={true} ColumnHeaders={Object.keys(schedule[0])} showCheckbox={true} RowData={schedule} Theme={theme}/>
+          <Table Sortable={true} ColumnHeaders={Object.keys(test[0])} showCheckbox={true} RowData={test} Theme={theme}/>
         ) : (
           <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
         )}
