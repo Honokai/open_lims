@@ -1,14 +1,11 @@
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import React from "react";
+import { ProviderProps } from "../Helpers/TypeHelpers";
 
 interface ContextProps {
   theme: "light"|"dark"
   handleTheme: () => void
-}
-
-interface ProviderProps {
-  children: React.ReactNode
 }
 
 export const ThemeContext = React.createContext<ContextProps>({} as ContextProps)

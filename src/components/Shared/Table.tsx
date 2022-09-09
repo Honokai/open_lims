@@ -1,19 +1,12 @@
 import styled from "@emotion/styled";
 import { ArrowDownward } from "@mui/icons-material";
 import { IconButton, Checkbox, TextField, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import Skeleton from '@mui/material/Skeleton';
+import React from "react";
 import { useTable } from "../../contexts/useTable";
 import { FormatColumn } from "../../Helpers/Functions";
+import { TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
-
-interface TableProps {
-  ColumnHeaders: Array<string>
-  RowData?: Array<Object>
-  Sortable?: boolean
-  Theme?: "light"|"dark"
-  Striped?: boolean
-  showCheckbox?: boolean
-}
 
 const DivLikeThead = styled.div`
   padding: .3rem 0;
@@ -48,18 +41,15 @@ interface CheckboxProps {
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
   const { data, handleDataAddition, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
-  const [ timer, setTimer ] = React.useState(0);
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
-    loadStatusFilter({...statusFilter, ColumnHeaders})
-    loadData(RowData ?? [])
+    // setTimeout(() => {
+      loadStatusFilter({...statusFilter, ColumnHeaders})
+      loadData(RowData ?? [])
+    // }, 2000)
+    
   }, [RowData])
-
-  function originalData()
-  {
-    console.log(RowData)
-  }
 
   function addRow()
   {
@@ -101,7 +91,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   return (
     
     <DivLikeTable>
-      <Button sx={{margin: "0 .3rem"}} variant="contained" onClick={originalData}>Original data</Button>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
       <DivLikeThead>
         {
@@ -152,21 +141,22 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       </DivLikeThead>
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
-        data.map((item, index) => (
+        data.filteredList.length > 0 ?
+        data.filteredList.map((item, index) => (
           <DivLikeRow key={`row[${index}]`}>
             {
               showCheckbox ? (
                 <div>
-                <Checkbox
-                  disableRipple
-                  key={`checkbox[${index}]`}
-                  id={`checkbox[${index}]`}
-                  value={index}
-                  checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
-                  onChange={(e) => handleCheckBox(e)}
-                  inputProps={{ 'aria-label': 'controlled' }}
-                />
-              </div>
+                  <Checkbox
+                    disableRipple
+                    key={`checkbox[${index}]`}
+                    id={`checkbox[${index}]`}
+                    value={index}
+                    checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
+                    onChange={(e) => handleCheckBox(e)}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                </div>
               ) : ""
             }
           {
@@ -179,12 +169,17 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
             })
           }
           </DivLikeRow>
-        ))
+        )) : 
+        Object.values(statusFilter.search).filter(x => x !== '').length > 0 ?
+          <div>
+            No results to filter
+          </div> :
+          <Skeleton variant="rectangular" sx={{ fontSize: '3rem' }} />
       }
       </DivLikeTbody>
       <div>
         <h4>
-          Exibindo {data.length}
+          Exibindo {data.filteredList.length}
         </h4>
       </div>
     </DivLikeTable>

@@ -1,40 +1,21 @@
 import React from "react"
-import { GenericObjectKeyType } from "../Helpers/TypeHelpers";
+import { shouldOrder } from "../Helpers/Functions";
+import { CheckboxProps, dataListType, GenericObjectKeyType, OrderingProps, ProviderProps, TableContextProps } from "../Helpers/TypeHelpers";
 
-interface CheckboxProps {
-  [key: string]: any;
-}
-
-interface ContextProps {
-  data: Object[]
-  checkboxes: CheckboxProps
-  handleCheckBox: (event: React.ChangeEvent<HTMLInputElement>, all?: boolean) => void
-  statusFilter: {[key: string]: any}
-  loadStatusFilter: (statusFilter: Object) => void
-  ordering: (colunaFiltrada: string) => void
-  loadData: (data: Array<Object>) => void
-  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reloadData?: boolean) => void
-  handleDataAddition: (dataAdded: string[]) => void
-}
-
-interface ProviderProps {
-  children: React.ReactNode
-}
-
-const TableContext = React.createContext<ContextProps>({} as ContextProps)
+const TableContext = React.createContext<TableContextProps>({} as TableContextProps)
 
 export const TableContextProvider = ({ children }: ProviderProps) => {
-  const [originalData, setOriginalData] = React.useState<Array<Object>>([{}])
-  const [ data, setData ] = React.useState<Array<Object>>([{}])
+  const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: []} as dataListType)
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
-  const [ statusFilter, setStatusFilter ] = React.useState<{[key: string]: any}>({search: {}});
+  const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
+  const [ statusFilter, setStatusFilter ] = React.useState<GenericObjectKeyType>({ordering: {column: '', order: 'asc'}, search: {}});
 
   React.useEffect(() => {
     if(Object.keys(statusFilter.search).length) {
       let ob: Object[] = []
 
-      Object.assign(ob, data)
-  
+      Object.assign(ob, data.list)
+
       let o = ob.filter((item: GenericObjectKeyType) => {
         let filtersCount = Object.values(statusFilter.search).filter(x => x !== '').length
 
@@ -44,11 +25,18 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
         return c.length === filtersCount ? true : false
       })
-  
-      setData(o) 
+
+      setData({...data, filteredList: o})
     }
-    
   }, [statusFilter])
+
+  React.useEffect(() => {
+    if (resultOrdering.column !== '')
+      setData({
+        ...data,
+        filteredList: shouldOrder(data.filteredList, resultOrdering.column, resultOrdering.ordering)
+      })
+  }, [resultOrdering])
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
     event && !all ? setCheckboxes({
@@ -67,43 +55,14 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
   function loadData(d: Array<Object>, start = true)
   {
-    //somente ativado quando 
-    if (start)
-      setOriginalData(d)
-    
-    setData(d)
+    setData({filteredList: d, list: d})
   }
 
   function ordering(colunaOrdenada: string)
   {
-    let t: Object[] = []
-
-    Object.assign(t, data)
-
-    t.sort((i1: GenericObjectKeyType, i2: GenericObjectKeyType) => {
-      if (i1[colunaOrdenada] < i2[colunaOrdenada]) {
-        return -1
-      }
-
-      if (i1[colunaOrdenada] > i2[colunaOrdenada]) {
-        return 1
-      }
-
-      return 0
-    })
-
-    if (statusFilter[colunaOrdenada]?.order === "asc") {
-      t.reverse()
-    }
-
-    setData(t)
-
-    setStatusFilter({
-      ...statusFilter,
-      [colunaOrdenada]: {
-        order: statusFilter[colunaOrdenada]?.order === "asc" ? "desc" : "asc",
-        search: ""
-      }
+    setResultOrdering({
+      column: colunaOrdenada,
+      ordering: resultOrdering.column !== colunaOrdenada ? 'asc' : 'desc'
     })
   }
 
@@ -118,13 +77,10 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
     t = t.concat(data).concat(b)
 
-    setData(t)
+    // setData(t)
   }
 
   function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {
-    if (reload)
-      loadData(originalData, false)
-
     setStatusFilter({
       ...statusFilter,
       search: {

@@ -1,3 +1,5 @@
+import { GenericObjectKeyType } from "./TypeHelpers"
+
 export function FormatDateToISO(data?: Date): string
 {
   return data ?
@@ -9,4 +11,27 @@ export function FormatDateToISO(data?: Date): string
 export function FormatColumn(column: string): string
 {
   return column.replaceAll("_", " ").toUpperCase()
+}
+
+export function shouldOrder(filteredArray: Object[], filteredColumn: string, filterOrder: string): Object[]
+{
+  let t: Object[] = filteredArray
+
+  t.sort((i1: GenericObjectKeyType, i2: GenericObjectKeyType) => {
+    if (i1[filteredColumn] < i2[filteredColumn]) {
+      return -1
+    }
+
+    if (i1[filteredColumn] > i2[filteredColumn]) {
+      return 1
+    }
+
+    return 0
+  })
+
+  if (filterOrder === 'desc') {
+    t.reverse()
+  }
+  
+  return t
 }

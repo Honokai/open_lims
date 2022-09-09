@@ -19,7 +19,7 @@ export const InputFilter = ({ columnName }: InputProps) => {
 
     let t = setTimeout(() => {
       e.target.value === '' ? handleInputSearch(e, true) : handleInputSearch(e)
-    }, 1000, e)
+    }, 500, e)
 
     setTimer(t)
   }
@@ -30,7 +30,6 @@ export const InputFilter = ({ columnName }: InputProps) => {
         name={`${columnName}`}
         sx={{margin: "0 .4rem"}}
         size="small" placeholder={`${columnName.toUpperCase()}`}
-        // @ts-ignore: Unreachable code error
         value={searchInput}
         onChange={(e) => handleChange(e)}
       />
