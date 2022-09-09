@@ -20,10 +20,11 @@ export const InputFilter = ({ columnName, value }: InputProps) => {
   {
     clearTimeout(timer)
 
-    setSearchInput(e.currentTarget.value)
+    setSearchInput(e.target.value)
 
     let t = setTimeout(() => {
-      handleInputSearch(e)
+      console.log(e.target)
+      e.target.value === '' ? handleInputSearch(e, true) : handleInputSearch(e)
     }, 1000, e)
 
     setTimer(t)

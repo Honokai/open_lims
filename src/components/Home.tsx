@@ -12,7 +12,7 @@ import { useTable } from "../contexts/useTable"
 const Home = () => {
   const { theme } = useTema()
   const { statusFilter } = useTable()
-  let teste = false
+  let teste = true
 
   return (
     <Layout>

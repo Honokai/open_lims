@@ -13,7 +13,7 @@ interface ContextProps {
   loadStatusFilter: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
-  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
+  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reloadData?: boolean) => void
   handleDataAddition: (dataAdded: string[]) => void
 }
 
@@ -24,6 +24,7 @@ interface ProviderProps {
 const TableContext = React.createContext<ContextProps>({} as ContextProps)
 
 export const TableContextProvider = ({ children }: ProviderProps) => {
+  const [originalData, setOriginalData] = React.useState<Array<Object>>([{}])
   const [ data, setData ] = React.useState<Array<Object>>([{}])
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
   const [ statusFilter, setStatusFilter ] = React.useState<{[key: string]: any}>({search: {}});
@@ -31,23 +32,20 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   React.useEffect(() => {
     if(Object.keys(statusFilter.search).length) {
       let ob: Object[] = []
-      let fields = Object.keys(statusFilter.search)
-      let values = Object.values(statusFilter.search)
-      // let entrie = Object.entries(statusFilter.search)
-      // console.log(Object.values(statusFilter.search))
-      // Object.entries(statusFilter.search).forEach((e) => {
-      //   console.log(e)
-      // })
+
       Object.assign(ob, data)
   
       let o = ob.filter((item: GenericObjectKeyType) => {
-        return item[fields[0]] == values[0]
+        let filtersCount = Object.values(statusFilter.search).filter(x => x !== '').length
+
+        let c = Object.entries(statusFilter.search).filter((val) => {
+          return String(item[val[0]]).toLowerCase() === String(val[1]).toLowerCase()
+        })
+
+        return c.length === filtersCount ? true : false
       })
   
-      setData(o)
-      // console.log(values)
-      // console.log(fields)
-      // console.log(entrie)
+      setData(o) 
     }
     
   }, [statusFilter])
@@ -69,6 +67,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
   function loadData(d: Array<Object>)
   {
+    setOriginalData(d)
     setData(d)
   }
 
@@ -119,7 +118,10 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     setData(t)
   }
 
-  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
+  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {
+    if (reload)
+      loadData(originalData)
+
     setStatusFilter({
       ...statusFilter,
       search: {
