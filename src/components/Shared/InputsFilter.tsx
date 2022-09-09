@@ -4,17 +4,12 @@ import { useTable } from "../../contexts/useTable";
 
 interface InputProps {
   columnName: string
-  value: string|null
 }
 
-export const InputFilter = ({ columnName, value }: InputProps) => {
+export const InputFilter = ({ columnName }: InputProps) => {
   const {statusFilter, handleInputSearch} = useTable()
   const [searchInput, setSearchInput] = React.useState(statusFilter.search[columnName] ?? "")
   const [timer, setTimer] = React.useState(0)
-
-  // React.useEffect(() => {
-  //   console.log(statusFilter)
-  // }, [statusFilter])
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
   {
@@ -23,7 +18,6 @@ export const InputFilter = ({ columnName, value }: InputProps) => {
     setSearchInput(e.target.value)
 
     let t = setTimeout(() => {
-      console.log(e.target)
       e.target.value === '' ? handleInputSearch(e, true) : handleInputSearch(e)
     }, 1000, e)
 

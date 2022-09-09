@@ -65,31 +65,34 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     setStatusFilter(filters)
   }
 
-  function loadData(d: Array<Object>)
+  function loadData(d: Array<Object>, start = true)
   {
-    setOriginalData(d)
+    //somente ativado quando 
+    if (start)
+      setOriginalData(d)
+    
     setData(d)
   }
 
-  function ordering(colunaFiltrada: string)
+  function ordering(colunaOrdenada: string)
   {
     let t: Object[] = []
 
     Object.assign(t, data)
 
     t.sort((i1: GenericObjectKeyType, i2: GenericObjectKeyType) => {
-      if (i1[colunaFiltrada] < i2[colunaFiltrada]) {
+      if (i1[colunaOrdenada] < i2[colunaOrdenada]) {
         return -1
       }
 
-      if (i1[colunaFiltrada] > i2[colunaFiltrada]) {
+      if (i1[colunaOrdenada] > i2[colunaOrdenada]) {
         return 1
       }
 
       return 0
     })
 
-    if (statusFilter[colunaFiltrada]?.order === "asc") {
+    if (statusFilter[colunaOrdenada]?.order === "asc") {
       t.reverse()
     }
 
@@ -97,8 +100,8 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
     setStatusFilter({
       ...statusFilter,
-      [colunaFiltrada]: {
-        order: statusFilter[colunaFiltrada]?.order === "asc" ? "desc" : "asc",
+      [colunaOrdenada]: {
+        order: statusFilter[colunaOrdenada]?.order === "asc" ? "desc" : "asc",
         search: ""
       }
     })
@@ -120,7 +123,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
   function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {
     if (reload)
-      loadData(originalData)
+      loadData(originalData, false)
 
     setStatusFilter({
       ...statusFilter,

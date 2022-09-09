@@ -145,7 +145,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
         {
           ColumnHeaders.map((columnName, index) => {
             return (
-              <InputFilter value={statusFilter.search[columnName] ?? null} key={`inputFilter[${columnName}]`} columnName={columnName}/>
+              <InputFilter key={`inputFilter[${columnName}]`} columnName={columnName}/>
             )
           })
         }
