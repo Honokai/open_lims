@@ -5,3 +5,6 @@ export interface textFieldInterface {
   errorMessage: string|null
 }
 
+export interface GenericObjectKeyType {
+  [key: string]: any
+}

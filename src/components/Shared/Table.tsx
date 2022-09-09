@@ -8,7 +8,7 @@ import { InputFilter } from "./InputsFilter";
 
 interface TableProps {
   ColumnHeaders: Array<string>
-  RowData: Array<Object>
+  RowData?: Array<Object>
   Sortable?: boolean
   Theme?: "light"|"dark"
   Striped?: boolean
@@ -47,32 +47,41 @@ interface CheckboxProps {
 }
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
-  const { data, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
+  const { data, handleDataAddition, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
   const [ timer, setTimer ] = React.useState(0);
-  // const [searchColumns, setSearchColumns] = React.useState(ColumnHeaders)
+  const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
     loadStatusFilter({...statusFilter, ColumnHeaders})
-    loadData(RowData)
+    loadData(RowData ?? [])
   }, [RowData])
-
-  // function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
-  // {
-  //   setSearchInput(event.currentTarget.value)
-  //   search(event)
-  // }
-  function search(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)
-  {
-    clearTimeout(timer)
-
-    setTimer(setTimeout(() => {
-      console.log(event)
-    }, 5000, event))
-  }
 
   function originalData()
   {
     console.log(RowData)
+  }
+
+  function addRow()
+  {
+    let d = document.createElement('div')
+    d.style.display = "flex"
+
+    if (showCheckbox) {
+      let t = document.createElement('div')
+      t.style.flex = "1"
+      d.append(t)
+    }
+    
+    ColumnHeaders.forEach(i => {
+      let c = document.createElement('div')
+      c.innerHTML = i
+      c.style.flex = "1"
+      d.appendChild(c)
+    })
+
+    handleDataAddition(ColumnHeaders)
+
+    tableBody.current?.appendChild(d)
   }
 
   const DivLikeTable = styled.div`
@@ -92,18 +101,19 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   return (
     
     <DivLikeTable>
-      <Button onClick={originalData}>Original data</Button>
+      <Button sx={{margin: "0 .3rem"}} variant="contained" onClick={originalData}>Original data</Button>
+      <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
       <DivLikeThead>
         {
           showCheckbox ? (
             <div>
-            <Checkbox
-              key={`all`}
-              checked={checkboxes?.checkAll}
-              onChange={(e) => handleCheckBox(e, true)}
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-          </div>
+              <Checkbox
+                key={`all`}
+                checked={checkboxes?.checkAll}
+                onChange={(e) => handleCheckBox(e, true)}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+            </div>
           ): ""
         }
       
@@ -140,7 +150,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
           })
         }
       </DivLikeThead>
-      <DivLikeTbody id="body">
+      <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.map((item, index) => (
           <DivLikeRow key={`row[${index}]`}>

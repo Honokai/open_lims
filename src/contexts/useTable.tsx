@@ -1,4 +1,5 @@
 import React from "react"
+import { GenericObjectKeyType } from "../Helpers/TypeHelpers";
 
 interface CheckboxProps {
   [key: string]: any;
@@ -13,6 +14,7 @@ interface ContextProps {
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
   handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
+  handleDataAddition: (dataAdded: string[]) => void
 }
 
 interface ProviderProps {
@@ -27,8 +29,28 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   const [ statusFilter, setStatusFilter ] = React.useState<{[key: string]: any}>({search: {}});
 
   React.useEffect(() => {
-    console.log("Renderizei")
-  }, [])
+    if(Object.keys(statusFilter.search).length) {
+      let ob: Object[] = []
+      let fields = Object.keys(statusFilter.search)
+      let values = Object.values(statusFilter.search)
+      // let entrie = Object.entries(statusFilter.search)
+      // console.log(Object.values(statusFilter.search))
+      // Object.entries(statusFilter.search).forEach((e) => {
+      //   console.log(e)
+      // })
+      Object.assign(ob, data)
+  
+      let o = ob.filter((item: GenericObjectKeyType) => {
+        return item[fields[0]] == values[0]
+      })
+  
+      setData(o)
+      // console.log(values)
+      // console.log(fields)
+      // console.log(entrie)
+    }
+    
+  }, [statusFilter])
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
     event && !all ? setCheckboxes({
@@ -56,19 +78,18 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
     Object.assign(t, data)
 
-    t.sort((i1, i2) => {
-      // @ts-ignore: Unreachable code error 
+    t.sort((i1: GenericObjectKeyType, i2: GenericObjectKeyType) => {
       if (i1[colunaFiltrada] < i2[colunaFiltrada]) {
         return -1
       }
-      // @ts-ignore: Unreachable code error
+
       if (i1[colunaFiltrada] > i2[colunaFiltrada]) {
         return 1
       }
 
       return 0
     })
-    // @ts-ignore: Unreachable code error
+
     if (statusFilter[colunaFiltrada]?.order === "asc") {
       t.reverse()
     }
@@ -78,11 +99,24 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     setStatusFilter({
       ...statusFilter,
       [colunaFiltrada]: {
-        // @ts-ignore: Unreachable code error
         order: statusFilter[colunaFiltrada]?.order === "asc" ? "desc" : "asc",
         search: ""
       }
     })
+  }
+
+  function handleDataAddition(dataAdded: string[])
+  {
+    let b = {}
+    let t: Object[] = []
+
+    dataAdded.forEach((val) => {
+      Object.assign(b, {[val]: ""})
+    })
+
+    t = t.concat(data).concat(b)
+
+    setData(t)
   }
 
   function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
@@ -96,7 +130,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   }
 
   return(
-      <TableContext.Provider value={{handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
+      <TableContext.Provider value={{handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
         {children}
       </TableContext.Provider>
   )

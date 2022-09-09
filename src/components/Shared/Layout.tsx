@@ -19,8 +19,7 @@ const Layout = (props: LayoutProps) => {
           {props.children}
         </Box>
       </ScopedCssBaseline>
-      </ThemeProvider>
-    // </ThemeContextProvider>
+    </ThemeProvider>
   )
 }
 
