@@ -41,7 +41,7 @@ interface CheckboxProps {
 }
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
-  const { data, handleDataAddition, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter} = useTable()
+  const { data, handleDataAddition, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, loading} = useTable()
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
@@ -89,9 +89,11 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   return (
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
-      <LoadingButton loading variant="outlined">
-        Submit
-      </LoadingButton>
+      {loading === true ? 
+        <LoadingButton loading variant="text">
+          T
+        </LoadingButton> : ""
+      }
       <DivLikeThead>
         {
           showCheckbox ? (

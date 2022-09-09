@@ -32,11 +32,16 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   }, [statusFilter])
 
   React.useEffect(() => {
+    setLoading(true)
     if (resultOrdering.column !== '')
       setData({
         ...data,
         filteredList: shouldOrder(data.filteredList, resultOrdering.column, resultOrdering.ordering)
       })
+    
+    setTimeout(() => {
+      setLoading(false)
+    }, 5000)
   }, [resultOrdering])
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {

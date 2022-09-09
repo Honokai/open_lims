@@ -15,6 +15,7 @@ export interface OrderingProps {
 }
 
 export interface TableContextProps {
+  loading: boolean
   data: dataListType
   checkboxes: CheckboxProps
   handleCheckBox: (event: React.ChangeEvent<HTMLInputElement>, all?: boolean) => void
