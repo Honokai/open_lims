@@ -19,7 +19,7 @@ const Home = () => {
 
     fetch("http://api.teste.com/api/setores",{
       headers: {
-        Authorization: `Bearer DKlr6lSYNocng5LBRyEK9pTS6SgK9rRDHqJZvDsO`
+        Authorization: `Bearer ${process.env.REACT_APP_TOKEN_API}`
       }
     }).then((r) => {
       return r.json()
