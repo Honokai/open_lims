@@ -10,10 +10,9 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
   const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
   const [ statusFilter, setStatusFilter ] = React.useState<GenericObjectKeyType>({search: {}});
-  const [timer, setTimer] = React.useState(0)
 
   React.useEffect(() => {
-    if(Object.keys(statusFilter.search).length) {
+    if(Object.keys(statusFilter.search).length ) {
       let ob: Object[] = []
 
       Object.assign(ob, data.list)
@@ -29,6 +28,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
       })
 
       setData({...data, filteredList: o})
+      setLoading(false)
     }
   }, [statusFilter])
 
@@ -56,7 +56,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     setStatusFilter(filters)
   }
 
-  function loadData(d: Array<Object>, start = true)
+  function loadData(d: Array<Object>)
   {
     setData({filteredList: d, list: d})
   }
@@ -65,7 +65,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   {
     setResultOrdering({
       column: colunaOrdenada,
-      ordering: resultOrdering.column !== colunaOrdenada ? 'asc' : 'desc'
+      ordering: resultOrdering.ordering !== 'asc' ? 'asc' : 'desc'
     })
   }
 
@@ -83,7 +83,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     // setData(t)
   }
 
-  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reload?: boolean) {    
+  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
     setStatusFilter({
       ...statusFilter,
       search: {
@@ -94,7 +94,7 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
   }
 
   return(
-      <TableContext.Provider value={{loading, handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
+      <TableContext.Provider value={{setLoading, loading, handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
         {children}
       </TableContext.Provider>
   )
@@ -102,10 +102,6 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
 export const useTable = () => {
   const context = React.useContext(TableContext)
-  
-  if (context === undefined) {
-    throw new Error('useCount must be used within a CountProvider')
-  }
 
   return context
 } 

@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { Link as RouterLink} from "react-router-dom";
-import { Box, Button, Card, CardContent, FormControl, InputProps, Link, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, FormControl, Link, TextField, Typography } from "@mui/material";
 import Layout from "../Shared/Layout";
 import { ContainerFlexDivJustified, FlexCenteredDiv } from "../Shared/StyledTags";
 import { textFieldInterface } from "../../Helpers/TypeHelpers";
@@ -30,7 +30,7 @@ const Register = () => {
 
   function erroredInput()
   {
-    let errored = Object.assign(new Object(), inputs)
+    let errored = Object.assign({}, inputs)
 
     Object.entries(inputs).forEach((key) => {
       let chave = key[0].toString()

@@ -1,4 +1,4 @@
-import { Button, Icon, Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import {HomeSharp as HomeIcon} from '@mui/icons-material';
 import { Link } from "react-router-dom"
 import { FlexCenteredDiv } from "../Shared/StyledTags"

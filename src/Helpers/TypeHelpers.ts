@@ -1,3 +1,10 @@
+import { SetorColumn } from "./SetorColumn"
+
+export interface UserProps {
+  id: number
+  name: string
+  email: string
+}
 export interface textFieldInterface {
   value: string|""
   type?: string
@@ -23,8 +30,9 @@ export interface TableContextProps {
   loadStatusFilter: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
-  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, reloadData?: boolean) => void
+  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
   handleDataAddition: (dataAdded: string[]) => void
+  setLoading: (p: boolean) => void
 }
 
 export interface CheckboxProps {
@@ -37,6 +45,7 @@ export interface dataListType {
 }
 
 export interface TableProps {
+  
   ColumnHeaders: Array<string>
   RowData?: Array<Object>
   Sortable?: boolean

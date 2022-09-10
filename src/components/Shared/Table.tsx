@@ -1,14 +1,14 @@
 import styled from "@emotion/styled";
 import { ArrowDownward } from "@mui/icons-material";
-import { IconButton, Checkbox, TextField, Button } from "@mui/material";
-import LoadingButton from '@mui/lab/LoadingButton';
+import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { useTable } from "../../contexts/useTable";
-import { FormatColumn } from "../../Helpers/Functions";
+import { formatColumn } from "../../Helpers/Functions";
 import { TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
+import { DivContentTable } from "../../Helpers/StyledTags";
 
 const DivLikeThead = styled.div`
   padding: .3rem 0;
@@ -31,10 +31,8 @@ const DivLikeTbody = styled.div`
 
 const DivLikeRow = styled.div`
   display: flex;
+  flex: 1;
   border-radius: 0.2rem;
-  * {
-    flex: 1;
-  }
 `
 
 interface CheckboxProps {
@@ -42,13 +40,13 @@ interface CheckboxProps {
 }
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
-  const { data, handleDataAddition, loadData, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, loading} = useTable()
+  const { data, handleDataAddition, ordering, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, loadData } = useTable()
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
     loadStatusFilter({...statusFilter, ColumnHeaders})
     loadData(RowData ?? [])
-  }, [RowData])
+  }, [])
 
   function addRow()
   {
@@ -109,7 +107,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
         ColumnHeaders.map((columnName, index) => {
           return (
             <div key={columnName}>
-              {FormatColumn(columnName)}
+              {formatColumn(columnName)}
               {
                 Sortable ? (
                   <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={() => ordering(columnName.toLowerCase())}>
@@ -125,9 +123,9 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       <DivLikeThead>
         {
           showCheckbox ? (
-            <div>
+            <DivContentTable>
             
-            </div>
+            </DivContentTable>
           ): ""
         }
         {
@@ -141,39 +139,39 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
-        data.filteredList.map((item, index) => (
-          <DivLikeRow key={`row[${index}]`}>
-            {
-              showCheckbox ? (
-                <div style={{flex: '1'}}>
-                  <Checkbox
-                    disableRipple
-                    key={`checkbox[${index}]`}
-                    id={`checkbox[${index}]`}
-                    value={index}
-                    checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
-                    onChange={(e) => handleCheckBox(e)}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                </div>
-              ) : ""
-            }
-          {
-            Object.entries(item).map((v, i) => {
-              return (
-                <div key={`rowContent[${index}][${i}]`} id={`${index}[${i}]`}>
-                  {v[1]}
-                </div>
-              )
-            })
-          }
-          </DivLikeRow>
-        )) : 
-        Object.values(statusFilter.search).filter(x => x !== '').length > 0 ?
-          <div>
-            No results to filter
-          </div> :
-          <Skeleton variant="rectangular" sx={{ fontSize: '3rem' }} />
+          data.filteredList.map((item, index) => (
+            <DivLikeRow key={`row[${index}]`}>
+              {
+                showCheckbox ? (
+                  <DivContentTable>
+                    <Checkbox
+                      disableRipple
+                      key={`checkbox[${index}]`}
+                      id={`checkbox[${index}]`}
+                      value={index}
+                      checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
+                      onChange={(e) => handleCheckBox(e)}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                  </DivContentTable>
+                ) : ""
+              }
+              {
+                Object.entries(item).map((v, i) => {
+                  return (
+                    <DivContentTable key={`rowContent[${index}][${i}]`} id={`${index}[${i}]`}>
+                      {v[1]}
+                    </DivContentTable>
+                  )
+                })
+              }
+            </DivLikeRow>
+          )) : 
+          Object.values(statusFilter.search).filter(x => x !== '').length > 0 ?
+            <DivContentTable>
+              No results to filter
+            </DivContentTable> :
+            <Skeleton variant="rectangular" sx={{ fontSize: '3rem' }} />
       }
       </DivLikeTbody>
       <div>

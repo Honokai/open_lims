@@ -18,7 +18,7 @@ export const InputFilter = ({ columnName }: InputProps) => {
     setSearchInput(e.target.value)
 
     let t = setTimeout(() => {
-      e.target.value === '' ? handleInputSearch(e, true) : handleInputSearch(e)
+      handleInputSearch(e)
     }, 500, e)
 
     setTimer(t)

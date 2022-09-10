@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import Navbar from "./Navbar";
-import { Tema, ThemeContext, ThemeContextProvider, useTema } from "../../contexts/useTheme";
+import { Tema, useTema } from "../../contexts/useTheme";
 import { Box } from "@mui/system";
 import { ScopedCssBaseline, ThemeProvider } from "@mui/material"
 
