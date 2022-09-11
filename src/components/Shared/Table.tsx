@@ -117,12 +117,12 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
       d.append(t)
     }
     
-    ColumnHeaders.forEach(i => {
-      let c = document.createElement('div')
-      c.innerHTML = i
-      c.style.flex = "1"
-      d.appendChild(c)
-    })
+    // ColumnHeaders.forEach(i => {
+    //   let c = document.createElement('div')
+    //   c.innerHTML = i
+    //   c.style.flex = "1"
+    //   d.appendChild(c)
+    // })
 
     // handleDataAddition(ColumnHeaders)
 
@@ -133,8 +133,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
   {
     let o = Object.assign({}, data)
 
-    console.log(o.filteredList.push(Object.values(ColumnHeaders).map(e => {return {e: ''}})))
-    console.log(o)
     let b = {}
     let t: Object[] = []
 

@@ -2,7 +2,7 @@ import { Container } from "@mui/system"
 import React from "react"
 import { useTable } from "../../contexts/useTable"
 import { useTema } from "../../contexts/useTheme"
-import { SetorColumn } from "../../Helpers/SetorColumn"
+import { UserColumns } from "../../Helpers/UserColumns"
 import Layout from "../Shared/Layout"
 import Table from "../Shared/Table"
 
@@ -10,7 +10,6 @@ const UserList = () => {
   const {setLoading} = useTable()
   const [d, setD] = React.useState([])
   const {theme} = useTema()
-  const objRef = React.useRef<SetorColumn>()
 
   React.useEffect(() => {
     setLoading(true)
@@ -21,9 +20,6 @@ const UserList = () => {
     }).then((r) => {
       return r.json()
     }).then((json) => {
-      let ColumnHeaders = Object.keys(json[0])
-      objRef.current = new SetorColumn(ColumnHeaders, [''])
-
       setD(json ?? [])
 
       setLoading(false)
@@ -35,7 +31,7 @@ const UserList = () => {
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
-        <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} RowData={d} Theme={theme}/>
+        <Table Entity={new UserColumns()} Sortable={true} RowData={d} Theme={theme}/>
       </Container>
     </Layout>
   )

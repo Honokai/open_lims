@@ -41,7 +41,7 @@ export interface dataListType {
 
 export interface TableProps {
   Entity?: BaseColumn
-  ColumnHeaders: Array<string>
+  ColumnHeaders?: Array<string>
   RowData?: Array<Object>
   Sortable?: boolean
   Theme?: "light"|"dark"
