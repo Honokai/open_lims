@@ -12,7 +12,7 @@ import { TableRow } from "./TableRow";
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ state, setState ] = React.useState({loading: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
+  const [ state, setState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
@@ -60,13 +60,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     }
   }, [state.ordering])
 
-  // -----------------------------------------
-  React.useEffect(() => {
-    console.log(state.checkBoxes)
-    console.log(state.checkBoxes[`checkbox[0]`])
-  }, [state.checkBoxes])
-  // -----------------------------------------
-
   function ordering(colunaOrdenada: string)
   {
     setState({...state,
@@ -77,8 +70,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     })
   }
 
-  function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
-    console.log(event.currentTarget)
+  function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all?: 'check'|'uncheck') {
     if (event && !all) {
       setState({
         ...state,
@@ -88,13 +80,15 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       })
     } else {
       let checkBoxesCopy = Object.assign({}, state.checkBoxes)
+
       let allCheckBoxes: NodeListOf<HTMLInputElement>  = document.querySelectorAll("[id^='checkbox']")
       allCheckBoxes.forEach((item) => {
-        checkBoxesCopy[item.id] = !item.checked
+        checkBoxesCopy[item.id] = all === 'uncheck' ? false : true
       })
-      
+
       setState({
         ...state,
+        checkAll: !state.checkAll,
         checkBoxes: checkBoxesCopy
       })
     }
@@ -165,8 +159,8 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
             <div>
               <Checkbox
                 key={`all`}
-                // checked={checkboxes?.checkAll}
-                onChange={(e) => handleCheckBox(e, true)}
+                value={state.checkAll}
+                onChange={(e) => handleCheckBox(e, state.checkAll ? 'uncheck' : 'check')}
                 inputProps={{ 'aria-label': 'controlled' }}
               />
             </div>
