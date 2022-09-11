@@ -9,8 +9,9 @@ import { useTable } from "../contexts/useTable"
 import { SetorColumn } from "../Helpers/SetorColumn"
 
 const Home = () => {
-  const { theme } = useTema()
-  const { statusFilter, setLoading, loadStatusFilter, loadData, data } = useTable()
+  const {setLoading} = useTable()
+  const [d, setD] = React.useState([])
+  const {theme} = useTema()
   const objRef = React.useRef<SetorColumn>()
   let teste = true
 
@@ -26,9 +27,8 @@ const Home = () => {
     }).then((json) => {
       let ColumnHeaders = Object.keys(json[0])
       objRef.current = new SetorColumn(ColumnHeaders, [''])
-      
-      loadStatusFilter({...statusFilter, ColumnHeaders})
-      loadData(json ?? [])
+
+      setD(json ?? [])
 
       setLoading(false)
     })
@@ -38,11 +38,11 @@ const Home = () => {
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
         <Typography variant="h4" paragraph>
-            Welcome, {statusFilter.search['client']}
+            Welcome, 
         </Typography>
 
         {teste ? (
-          <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={data.filteredList} Theme={theme}/>
+          <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
         ) : (
           <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
         )}

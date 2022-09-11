@@ -8,6 +8,7 @@ import Layout from "../components/Shared/Layout";
 import { TableContextProvider } from "../contexts/useTable";
 import { ThemeContextProvider } from "../contexts/useTheme";
 import UserList from "../components/Users/UserList";
+import UserList2 from "../components/Testing/UserList2";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
             <Route path="/sample/:nome" element={<Layout/>}/>
             <Route path="/sample/create" element={<SampleCreate/>}/>
             <Route path="/users" element={<UserList/>}/>
+            <Route path="/users2" element={<UserList2/>}/>
             <Route path="*" element={<Page404/>}/>
           </Routes>
         </BrowserRouter>

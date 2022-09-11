@@ -35,3 +35,18 @@ export function shouldOrder(filteredArray: Object[], filteredColumn: string, fil
   
   return t
 }
+
+export function conditionalComparison(a: string[], operator: string): boolean
+{
+  switch (operator) {
+    case 'contains':
+      return String(a[0]).toLowerCase().includes(String(a[1]).toLowerCase())
+  
+    case 'equals':
+      return String(a[0]).toLowerCase() === String(a[1]).toLowerCase()
+
+    default:
+      console.log('eeeeeee')
+      return false
+  }
+}

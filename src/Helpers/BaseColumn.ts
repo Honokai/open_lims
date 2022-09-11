@@ -1,5 +1,5 @@
 
-export class BaseColumn {
+export abstract class BaseColumn {
   public columnNames: string[]
   public columnsType: string[]
   public conditionFilter: string[] = ['contains', 'starts_with', 'ends_with', 'equal', 'not equal']

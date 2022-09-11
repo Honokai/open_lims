@@ -2,63 +2,63 @@ import React from "react"
 import { shouldOrder } from "../Helpers/Functions";
 import { CheckboxProps, dataListType, GenericObjectKeyType, OrderingProps, ProviderProps, TableContextProps } from "../Helpers/TypeHelpers";
 
-const TableContext = React.createContext<TableContextProps>({} as TableContextProps)
+export const TableContext = React.createContext<TableContextProps>({} as TableContextProps)
 
 export const TableContextProvider = ({ children }: ProviderProps) => {
   const [loading, setLoading] = React.useState(false)
-  const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: []} as dataListType)
+  const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
   const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
   const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
-  const [ statusFilter, setStatusFilter ] = React.useState<GenericObjectKeyType>({search: {}});
+  const [ searchParams, setSearchParams ] = React.useState<GenericObjectKeyType>({search: {}});
 
   React.useEffect(() => {
-    if(Object.keys(statusFilter.search).length ) {
+    if(Object.keys(searchParams.search).length ) {
       let ob: Object[] = []
 
       Object.assign(ob, data.list)
 
       let o = ob.filter((item: GenericObjectKeyType) => {
-        let filtersCount = Object.values(statusFilter.search).filter(x => x !== '').length
+        let filtersCount = Object.values(searchParams.search).filter(x => x !== '').length
 
-        let c = Object.entries(statusFilter.search).filter((val) => {
+        let c = Object.entries(searchParams.search).filter((val) => {
           return String(item[val[0]]).toLowerCase() === String(val[1]).toLowerCase()
         })
 
         return c.length === filtersCount ? true : false
       })
-
+      console.log(searchParams)
       setData({...data, filteredList: o})
       setLoading(false)
     }
-  }, [statusFilter])
+  }, [searchParams])
 
-  React.useEffect(() => {
-    if (resultOrdering.column !== '') {
-      setData({
-        ...data,
-        filteredList: shouldOrder(data.filteredList, resultOrdering.column, resultOrdering.ordering)
-      })
-    }
-  }, [resultOrdering])
+  // React.useEffect(() => {
+  //   if (resultOrdering.column !== '') {
+  //     setData({
+  //       ...data,
+  //       filteredList: shouldOrder(data.filteredList, resultOrdering.column, resultOrdering.ordering)
+  //     })
+  //   }
+  // }, [resultOrdering])
 
-  function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
-    event && !all ? setCheckboxes({
-      ...checkboxes,
-      [event.currentTarget.id]: event.currentTarget.checked
-    }) : setCheckboxes({
-      ...checkboxes,
-      checkAll: event.currentTarget.checked
-    })
-  }
+  // function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
+  //   event && !all ? setCheckboxes({
+  //     ...checkboxes,
+  //     [event.currentTarget.id]: event.currentTarget.checked
+  //   }) : setCheckboxes({
+  //     ...checkboxes,
+  //     checkAll: event.currentTarget.checked
+  //   })
+  // }
 
-  function loadStatusFilter(filters: Object)
+  function loadSearchParams(filters: Object)
   {
-    setStatusFilter(filters)
+    setSearchParams(filters)
   }
 
   function loadData(d: Array<Object>)
   {
-    setData({filteredList: d, list: d})
+    setData({...data, filteredList: d, list: d})
   }
 
   function ordering(colunaOrdenada: string)
@@ -83,18 +83,18 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
     // setData(t)
   }
 
-  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
-    setStatusFilter({
-      ...statusFilter,
-      search: {
-        ...statusFilter.search,
-        [event.target.name]: event.target.value
-      }
-    })
-  }
+  // function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
+  //   setSearchParams({
+  //     ...searchParams,
+  //     search: {
+  //       ...searchParams.search,
+  //       [event.target.name]: event.target.value
+  //     }
+  //   })
+  // }
 
   return(
-      <TableContext.Provider value={{setLoading, loading, handleDataAddition, handleInputSearch, data, checkboxes, handleCheckBox, statusFilter, loadStatusFilter, ordering, loadData}}>
+      <TableContext.Provider value={{setLoading, loading, data, checkboxes, searchParams, loadSearchParams, ordering, loadData}}>
         {children}
       </TableContext.Provider>
   )

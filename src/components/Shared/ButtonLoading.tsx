@@ -10,7 +10,7 @@ const ButtonLoading = () => {
             loading ? 
                 <LoadingButton loading variant="text">
                     T
-                </LoadingButton> : 'tettete'
+                </LoadingButton> : ''
             }
         </>
     )

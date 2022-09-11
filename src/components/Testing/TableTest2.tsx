@@ -3,15 +3,45 @@ import { ArrowDownward } from "@mui/icons-material";
 import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
-import { conditionalComparison, formatColumn, shouldOrder } from "../../Helpers/Functions";
+import { useTable } from "../../contexts/useTable";
+import { formatColumn, shouldOrder } from "../../Helpers/Functions";
 import { dataListType, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
-import { InputFilter } from "./InputsFilter";
-import ButtonLoading from "./ButtonLoading";
-import { DivContentTable, DivLikeTable, DivLikeRow, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
+import ButtonLoading from "../Shared/ButtonLoading";
+import { DivContentTable } from "../../Helpers/StyledTags";
+import { InputFilter2 } from "./InputFilter2";
 
-const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
+const DivLikeThead = styled.div`
+  padding: .3rem 0;
+  display: flex;
+  text-align: center;
+  border-bottom: 2px solid gray;
+  & * {
+    flex: 1;
+  }
+`
+
+const DivLikeTbody = styled.div`
+  margin: .3rem 0;
+  display: flex;
+  // height: 85%;
+  flex-direction: column;
+  text-align: center;
+  // overflow: auto;
+`
+
+const DivLikeRow = styled.div`
+  display: flex;
+  flex: 1;
+  border-radius: 0.2rem;
+`
+
+interface CheckboxProps {
+  [key: string]: any;
+}
+
+const TableTest2 = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ state, setState ] = React.useState({loading: false, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
+  const [ state, setState ] = React.useState({loading: false, search: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
@@ -20,34 +50,25 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   }, [RowData])
 
   React.useEffect(() => {
-    if(Object.keys(state.search).length) {
-      console.log('entrei')
+    if(Object.keys(state.search).length ) {
       let ob: Object[] = []
 
       Object.assign(ob, data.list)
 
-      let filtersCount = Object.values(state.search).filter(x => x !== '').length
-      if (filtersCount > 0) {
-        let o = ob.filter((item: GenericObjectKeyType) => {
-          let c = Object.entries(state.search).filter((val) => {
-            // console.log(conditionalComparison([item[val[0]], val[1]], state.condition[val[0]]))
-            return conditionalComparison([item[val[0]], val[1]], state.condition[val[0]])
-          })
+      let o = ob.filter((item: GenericObjectKeyType) => {
+        let filtersCount = Object.values(state.search).filter(x => x !== '').length
 
-          return c.length === filtersCount ? true : false
+        let c = Object.entries(state.search).filter((val) => {
+          return String(item[val[0]]).toLowerCase() === String(val[1]).toLowerCase()
         })
 
-        setData({
-            ...data,
-            filteredList: o
-        })
-      } else {
-        setData({
+        return c.length === filtersCount ? true : false
+      })
+      console.log(state)
+      setData({
           ...data,
-          filteredList: ob
-        })
-      }
-
+          filteredList: o
+      })
       setState({...state, loading: false})
     }
   }, [state.search])
@@ -71,14 +92,13 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     })
   }
 
-  function handleInputSearch(e: string[]) {
+  function handleInputSearch(event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) {
+    console.log('passei pela funcao da tabela 2')
     setState({
       ...state,
       search: {
-        [e[0]]: e[1],
-      },
-      condition: {
-        [e[0]]: e[2]
+        ...state.search,
+        [event.target.name]: event.target.value
       }
     })
   }
@@ -106,19 +126,19 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     tableBody.current?.appendChild(d)
   }
 
-  function handleDataAddition(dataAdded: string[])
-  {
-    let b = {}
-    let t: Object[] = []
-
-    dataAdded.forEach((val) => {
-      Object.assign(b, {[val]: ""})
-    })
-
-    t = t.concat(data).concat(b)
-
-    // setData(t)
-  }
+  const DivLikeTable = styled.div`
+    flex: 1;
+    min-width: 500px;
+    margin: 0 1rem;
+    padding: .5rem 1rem;
+    border-radius: .2rem;
+    border: 1px solid gray;
+    // overflow: hidden;
+    // #body > div:nth-of-type(even) {
+    //   background-color: ${Theme === 'light' ? "#d4d4d4" : "rgba(77,77,77,0.8)"};
+    //   color: ${Theme === 'light' ? "inherit" : "#fff"};
+    // }
+  `
 
   return (
     <DivLikeTable>
@@ -166,7 +186,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
         {
           ColumnHeaders.map((columnName, index) => {
             return (
-              <InputFilter selectValue={state.condition[columnName] ?? ""} inputValue={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
+              <InputFilter2 value={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
             )
           })
         }
@@ -209,6 +229,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
             <Skeleton variant="rectangular" sx={{ fontSize: '3rem' }} />
       }
       </DivLikeTbody>
+      {/* <TableBody data={data.filteredList} search={state.search}/> */}
       <div>
         <h4>
           Exibindo {data.filteredList?.length}
@@ -218,4 +239,4 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   )
 }
 
-export default Table
+export default TableTest2

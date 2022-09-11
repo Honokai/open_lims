@@ -71,13 +71,13 @@ const Navbar = () => {
                         </NoStyleLink>
                       </MenuItem>
                       <MenuItem disableGutters onClick={handleMenu}>
-                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/users"}>
                         Users
                         </NoStyleLink>
                       </MenuItem>
                       <MenuItem disableGutters onClick={handleMenu}>
-                      <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
-                      Tests
+                        <NoStyleLink style={{width: "100%", padding: "0 1rem"}} onClick={handleMenu} to={"/login"}>
+                          Tests
                         </NoStyleLink>
                       </MenuItem>
                       <MenuItem disableGutters>

@@ -1,12 +1,14 @@
 import { Container } from "@mui/system"
+import { read } from "fs"
 import React from "react"
 import { useTable } from "../../contexts/useTable"
 import { useTema } from "../../contexts/useTheme"
 import { SetorColumn } from "../../Helpers/SetorColumn"
 import Layout from "../Shared/Layout"
 import Table from "../Shared/Table"
+import TableTest2 from "../Testing/TableTest2"
 
-const UserList = () => {
+const UserList2 = () => {
   const {setLoading} = useTable()
   const [d, setD] = React.useState([])
   const {theme} = useTema()
@@ -35,10 +37,11 @@ const UserList = () => {
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
-        <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} RowData={d} Theme={theme}/>
+        {/* <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} RowData={data.filteredList} Theme={theme}/> */}
+        <TableTest2 Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} RowData={d} Theme={theme}/>
       </Container>
     </Layout>
   )
 }
 
-export default UserList
+export default UserList2

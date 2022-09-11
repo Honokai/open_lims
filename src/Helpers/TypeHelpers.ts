@@ -25,13 +25,10 @@ export interface TableContextProps {
   loading: boolean
   data: dataListType
   checkboxes: CheckboxProps
-  handleCheckBox: (event: React.ChangeEvent<HTMLInputElement>, all?: boolean) => void
-  statusFilter: {[key: string]: any}
-  loadStatusFilter: (statusFilter: Object) => void
+  searchParams: {[key: string]: any}
+  loadSearchParams: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
-  handleInputSearch: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void
-  handleDataAddition: (dataAdded: string[]) => void
   setLoading: (p: boolean) => void
 }
 
@@ -42,10 +39,10 @@ export interface CheckboxProps {
 export interface dataListType {
   list: Object[]
   filteredList: Object[]
+  new: Object[]
 }
 
 export interface TableProps {
-  
   ColumnHeaders: Array<string>
   RowData?: Array<Object>
   Sortable?: boolean
