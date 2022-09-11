@@ -1,25 +1,29 @@
-import styled from "@emotion/styled";
 import { ArrowDownward } from "@mui/icons-material";
 import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
-import { conditionalComparison, formatColumn, shouldOrder } from "../../Helpers/Functions";
+import { conditionalComparison, shouldOrder } from "../../Helpers/Functions";
 import { dataListType, dataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
+import { useNavigate } from "react-router-dom";
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
   const [ state, setState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     if(RowData)
       setData({...data, list: RowData, filteredList: RowData})
   }, [RowData])
 
+  React.useEffect(() => {
+    console.log(state.checkBoxes)
+  }, [state.checkBoxes])
   React.useEffect(() => {
     if(Object.keys(state.search).length) {
       let ob: Object[] = []
@@ -81,7 +85,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
     } else {
       let checkBoxesCopy = Object.assign({}, state.checkBoxes)
 
-      let allCheckBoxes: NodeListOf<HTMLInputElement>  = document.querySelectorAll("[id^='checkbox']")
+      let allCheckBoxes: NodeListOf<HTMLInputElement>  = document.querySelectorAll("input[type='checkbox'][id]")
       allCheckBoxes.forEach((item) => {
         checkBoxesCopy[item.id] = all === 'uncheck' ? false : true
       })
@@ -106,29 +110,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
     })
   }
 
-  function addRow()
-  {
-    let d = document.createElement('div')
-    d.style.display = "flex"
-
-    if (showCheckbox) {
-      let t = document.createElement('div')
-      t.style.flex = "1"
-      d.append(t)
-    }
-    
-    // ColumnHeaders.forEach(i => {
-    //   let c = document.createElement('div')
-    //   c.innerHTML = i
-    //   c.style.flex = "1"
-    //   d.appendChild(c)
-    // })
-
-    // handleDataAddition(ColumnHeaders)
-
-    tableBody.current?.appendChild(d)
-  }
-
   function handleDataAddition(dataAdded?: string[])
   {
     let o = Object.assign({}, data)
@@ -147,12 +128,18 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
 
   function showChecked()
   {
-    // let = Object.entries(state.checkBoxes).
+    let marked: string[] = []
+    Object.entries(state.checkBoxes).forEach(v => {
+      if (v[1] === true)
+        marked.push(v[0])
+    })
+    
+    navigate("sample/schedule", {state: { schedule: Object.values(marked).toString()}})
   }
 
   return (
     <DivLikeTable>
-      <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
+      <Button sx={{margin: "0 .3rem"}} onClick={showChecked} variant="contained">Iniciar</Button>
       <Button sx={{margin: "0 .3rem"}} onClick={() => handleDataAddition()} variant="contained">Save</Button>
       <ButtonLoading/>
       <DivLikeThead>
@@ -228,7 +215,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: dataPropsGeneric, index) => (
-            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={state.checkBoxes[`checkbox[${item['id']}]`]}/>
+            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={state.checkBoxes[`${item['id']}`]}/>
           )) : 
           Object.values(state.search).filter(x => x !== '').length > 0 ?
             <DivContentTable>

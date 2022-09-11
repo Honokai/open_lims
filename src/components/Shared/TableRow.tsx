@@ -20,7 +20,7 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked}: R
             <Checkbox
               disableRipple
               key={`checkbox[${index}]`}
-              id={`checkbox[${item['id']}]`}
+              id={`${item['id']}`}
               value={item['id']}
               checked={checked ?? false}
               onChange={(e) => handleCheckBox(e)}
