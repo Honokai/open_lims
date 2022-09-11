@@ -1,13 +1,13 @@
 import React from "react"
 import { shouldOrder } from "../Helpers/Functions";
-import { CheckboxProps, dataListType, GenericObjectKeyType, OrderingProps, ProviderProps, TableContextProps } from "../Helpers/TypeHelpers";
+import { dataListType, GenericObjectKeyType, OrderingProps, ProviderProps, TableContextProps } from "../Helpers/TypeHelpers";
 
 export const TableContext = React.createContext<TableContextProps>({} as TableContextProps)
 
 export const TableContextProvider = ({ children }: ProviderProps) => {
   const [loading, setLoading] = React.useState(false)
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ checkboxes, setCheckboxes ] = React.useState<CheckboxProps>({checkAll: false});
+  const [ checkboxes, setCheckboxes ] = React.useState<GenericObjectKeyType>({checkAll: false});
   const [resultOrdering, setResultOrdering] = React.useState<OrderingProps>({column: '', ordering: 'asc'})
   const [ searchParams, setSearchParams ] = React.useState<GenericObjectKeyType>({search: {}});
 

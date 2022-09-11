@@ -13,7 +13,7 @@ const Home = () => {
   const [d, setD] = React.useState([])
   const {theme} = useTema()
   const objRef = React.useRef<SetorColumn>()
-  let teste = true
+  let teste = false
 
   React.useEffect(() => {
     setLoading(true)
@@ -40,13 +40,11 @@ const Home = () => {
         <Typography variant="h4" paragraph>
             Welcome, 
         </Typography>
-
-        {teste ? (
-          <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
-        ) : (
-          <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
-        )}
-        
+      {teste ? (
+        <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
+      ) : (
+        <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
+      )}
       </Container>
     </Layout>
   )

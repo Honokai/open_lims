@@ -24,16 +24,12 @@ export interface OrderingProps {
 export interface TableContextProps {
   loading: boolean
   data: dataListType
-  checkboxes: CheckboxProps
+  checkboxes: GenericObjectKeyType
   searchParams: {[key: string]: any}
   loadSearchParams: (statusFilter: Object) => void
   ordering: (colunaFiltrada: string) => void
   loadData: (data: Array<Object>) => void
   setLoading: (p: boolean) => void
-}
-
-export interface CheckboxProps {
-  [key: string]: any;
 }
 
 export interface dataListType {
@@ -53,4 +49,9 @@ export interface TableProps {
 
 export interface ProviderProps {
   children: React.ReactNode
+}
+
+export interface dataPropsGeneric {
+  id?: string,
+  [key: string]: any
 }

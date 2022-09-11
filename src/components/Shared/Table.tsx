@@ -4,14 +4,15 @@ import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { conditionalComparison, formatColumn, shouldOrder } from "../../Helpers/Functions";
-import { dataListType, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
+import { dataListType, dataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
-import { DivContentTable, DivLikeTable, DivLikeRow, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
+import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
+import { TableRow } from "./TableRow";
 
 const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ state, setState ] = React.useState({loading: false, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
+  const [ state, setState ] = React.useState({loading: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
 
   React.useEffect(() => {
@@ -21,7 +22,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
 
   React.useEffect(() => {
     if(Object.keys(state.search).length) {
-      console.log('entrei')
       let ob: Object[] = []
 
       Object.assign(ob, data.list)
@@ -30,7 +30,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       if (filtersCount > 0) {
         let o = ob.filter((item: GenericObjectKeyType) => {
           let c = Object.entries(state.search).filter((val) => {
-            // console.log(conditionalComparison([item[val[0]], val[1]], state.condition[val[0]]))
             return conditionalComparison([item[val[0]], val[1]], state.condition[val[0]])
           })
 
@@ -61,6 +60,13 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     }
   }, [state.ordering])
 
+  // -----------------------------------------
+  React.useEffect(() => {
+    console.log(state.checkBoxes)
+    console.log(state.checkBoxes[`checkbox[0]`])
+  }, [state.checkBoxes])
+  // -----------------------------------------
+
   function ordering(colunaOrdenada: string)
   {
     setState({...state,
@@ -69,6 +75,29 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
         order: state.ordering.order !== 'asc' ? 'asc' : 'desc'
       }
     })
+  }
+
+  function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all = false) {
+    console.log(event.currentTarget)
+    if (event && !all) {
+      setState({
+        ...state,
+        checkBoxes: {
+          ...state.checkBoxes,
+          [event.currentTarget.id]: event.currentTarget.checked}
+      })
+    } else {
+      let checkBoxesCopy = Object.assign({}, state.checkBoxes)
+      let allCheckBoxes: NodeListOf<HTMLInputElement>  = document.querySelectorAll("[id^='checkbox']")
+      allCheckBoxes.forEach((item) => {
+        checkBoxesCopy[item.id] = !item.checked
+      })
+      
+      setState({
+        ...state,
+        checkBoxes: checkBoxesCopy
+      })
+    }
   }
 
   function handleInputSearch(e: string[]) {
@@ -120,9 +149,15 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     // setData(t)
   }
 
+  function showChecked()
+  {
+    // let = Object.entries(state.checkBoxes).
+  }
+
   return (
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
+      <Button sx={{margin: "0 .3rem"}} /*onClick={addRow}*/ variant="contained">Save</Button>
       <ButtonLoading/>
       <DivLikeThead>
         {
@@ -131,7 +166,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
               <Checkbox
                 key={`all`}
                 // checked={checkboxes?.checkAll}
-                // onChange={(e) => handleCheckBox(e, true)}
+                onChange={(e) => handleCheckBox(e, true)}
                 inputProps={{ 'aria-label': 'controlled' }}
               />
             </div>
@@ -174,33 +209,8 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
-          data.filteredList.map((item, index) => (
-            <DivLikeRow key={`row[${index}]`}>
-              {
-                showCheckbox ? (
-                  <DivContentTable>
-                    <Checkbox
-                      disableRipple
-                      key={`checkbox[${index}]`}
-                      id={`checkbox[${index}]`}
-                      value={index}
-                      // checked={checkboxes[`checkbox[${index}]`] ?? checkboxes.checkAll ?? false}
-                      // onChange={(e) => handleCheckBox(e)}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </DivContentTable>
-                ) : ""
-              }
-              {
-                Object.entries(item).map((v, i) => {
-                  return (
-                    <DivContentTable key={`rowContent[${index}][${i}]`} id={`${index}[${i}]`}>
-                      {v[1]}
-                    </DivContentTable>
-                  )
-                })
-              }
-            </DivLikeRow>
+          data.filteredList.map((item: dataPropsGeneric, index) => (
+            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={state.checkBoxes[`checkbox[${item['id']}]`]}/>
           )) : 
           Object.values(state.search).filter(x => x !== '').length > 0 ?
             <DivContentTable>
