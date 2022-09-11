@@ -1,10 +1,11 @@
 import { BaseColumn } from "./BaseColumn";
 
 export class UserColumns extends BaseColumn{
-  private dataFields = ['id', 'name', 'email', 'created_at']
+  public dataFields = ['id', 'name', 'email', 'created_at'];
+  public columnNames = ['ID', 'Nome', 'E-mail', 'Criado em'];
 
-  public getFields()
+  constructor(columnNames?: string[], columnsType?: string[])
   {
-    return this.dataFields
+    super(columnNames, columnsType)
   }
 }

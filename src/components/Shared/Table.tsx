@@ -10,7 +10,7 @@ import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
 
-const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}: TableProps) => {
+const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
   const [ state, setState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
@@ -129,16 +129,20 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
     tableBody.current?.appendChild(d)
   }
 
-  function handleDataAddition(dataAdded: string[])
+  function handleDataAddition(dataAdded?: string[])
   {
+    let o = Object.assign({}, data)
+
+    console.log(o.filteredList.push(Object.values(ColumnHeaders).map(e => {return {e: ''}})))
+    console.log(o)
     let b = {}
     let t: Object[] = []
 
-    dataAdded.forEach((val) => {
-      Object.assign(b, {[val]: ""})
-    })
+    // dataAdded.forEach((val) => {
+    //   Object.assign(b, {[val]: ""})
+    // })
 
-    t = t.concat(data).concat(b)
+    // t = t.concat(data).concat(b)
 
     // setData(t)
   }
@@ -151,23 +155,38 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
   return (
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={addRow} variant="contained">Add row</Button>
-      <Button sx={{margin: "0 .3rem"}} /*onClick={addRow}*/ variant="contained">Save</Button>
+      <Button sx={{margin: "0 .3rem"}} onClick={() => handleDataAddition()} variant="contained">Save</Button>
       <ButtonLoading/>
       <DivLikeThead>
-        {
-          showCheckbox ? (
-            <div>
-              <Checkbox
-                key={`all`}
-                value={state.checkAll}
-                onChange={(e) => handleCheckBox(e, state.checkAll ? 'uncheck' : 'check')}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-            </div>
-          ): ""
-        }
-      
       {
+        showCheckbox ? (
+          <div>
+            <Checkbox
+              key={`all`}
+              value={state.checkAll}
+              onChange={(e) => handleCheckBox(e, state.checkAll ? 'uncheck' : 'check')}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+          </div>
+        ): ""
+      }
+      {
+        Entity?.getColumnNames().map((columnName, index) => {
+          return (
+            <DivContentTable key={columnName}>
+              {columnName}
+              {
+                Sortable ? (
+                  <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={() => ordering(columnName.toLowerCase())}>
+                    <ArrowDownward/>
+                  </IconButton>
+                ) : ""
+              }
+            </DivContentTable>
+          )
+        })
+      }
+      {/* {
         ColumnHeaders.map((columnName, index) => {
           return (
             <DivContentTable key={columnName}>
@@ -182,7 +201,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
             </DivContentTable>
           )
         })
-      }
+      } */}
       </DivLikeThead>
       <DivLikeThead>
         {
@@ -193,12 +212,19 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox}:
           ): ""
         }
         {
-          ColumnHeaders.map((columnName, index) => {
+          Entity?.getDataFields().map((columnName, index) => {
             return (
               <InputFilter selectValue={state.condition[columnName] ?? ""} inputValue={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
             )
           })
         }
+        {/* {
+          ColumnHeaders.map((columnName, index) => {
+            return (
+              <InputFilter selectValue={state.condition[columnName] ?? ""} inputValue={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
+            )
+          })
+        } */}
       </DivLikeThead>
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {

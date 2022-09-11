@@ -1,15 +1,11 @@
 import { BaseColumn } from "./BaseColumn";
 
 export class SetorColumn extends BaseColumn {
-  public columnNameDisplay = ['ID', 'Setor', 'Data criação', 'Atualizado em']
+  public dataFields = ['id', 'nome', 'created_at', 'updated_at']
+  public columnNames = ['ID', 'Setor', 'Data criação', 'Atualizado em'];
 
-  public getColumnNameDisplay(): string[]
+  constructor(columnNames?: string[], columnsType?: string[])
   {
-    return this.columnNameDisplay
-  }
-
-  public getOriginalNameAndDisplay(): Array<string[]>
-  {
-    return [this.columnNameDisplay, this.columnNames]
+    super(columnNames, columnsType)
   }
 }

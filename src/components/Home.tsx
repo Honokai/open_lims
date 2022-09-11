@@ -6,6 +6,7 @@ import Layout from "./Shared/Layout"
 import Table from "./Shared/Table";
 import { useTema } from "../contexts/useTheme"
 import { useTable } from "../contexts/useTable"
+import { UserColumns } from "../Helpers/UserColumns"
 import { SetorColumn } from "../Helpers/SetorColumn"
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
   const [d, setD] = React.useState([])
   const {theme} = useTema()
   const objRef = React.useRef<SetorColumn>()
-  let teste = false
+  let teste = true
 
   React.useEffect(() => {
     setLoading(true)
@@ -41,9 +42,9 @@ const Home = () => {
             Welcome, 
         </Typography>
       {teste ? (
-        <Table Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
+        <Table Entity={new SetorColumn()}Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
       ) : (
-        <Table Sortable={true} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
+        <Table Sortable={true} Entity={new UserColumns()} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
       )}
       </Container>
     </Layout>

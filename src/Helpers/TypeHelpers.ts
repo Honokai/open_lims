@@ -1,3 +1,4 @@
+import { BaseColumn } from "./BaseColumn"
 import { SetorColumn } from "./SetorColumn"
 
 export interface UserProps {
@@ -39,6 +40,7 @@ export interface dataListType {
 }
 
 export interface TableProps {
+  Entity?: BaseColumn
   ColumnHeaders: Array<string>
   RowData?: Array<Object>
   Sortable?: boolean
