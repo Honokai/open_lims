@@ -3,7 +3,7 @@ import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { conditionalComparison, shouldOrder } from "../../Helpers/Functions";
-import { dataListType, dataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
+import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
@@ -22,17 +22,14 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
   }, [RowData])
 
   React.useEffect(() => {
-    console.log(state.checkBoxes)
-  }, [state.checkBoxes])
-  React.useEffect(() => {
     if(Object.keys(state.search).length) {
-      let ob: Object[] = []
+      let dataCopy: Object[] = []
 
-      Object.assign(ob, data.list)
+      Object.assign(dataCopy, data.list)
 
       let filtersCount = Object.values(state.search).filter(x => x !== '').length
       if (filtersCount > 0) {
-        let o = ob.filter((item: GenericObjectKeyType) => {
+        let dataFiltered = dataCopy.filter((item: GenericObjectKeyType) => {
           let c = Object.entries(state.search).filter((val) => {
             return conditionalComparison([item[val[0]], val[1]], state.condition[val[0]])
           })
@@ -42,12 +39,12 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
 
         setData({
             ...data,
-            filteredList: o
+            filteredList: dataFiltered
         })
       } else {
         setData({
           ...data,
-          filteredList: ob
+          filteredList: dataCopy
         })
       }
 
@@ -156,13 +153,13 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
         ): ""
       }
       {
-        Entity?.getColumnNames().map((columnName, index) => {
+        Entity?.getDataFields().map((columnName) => {
           return (
-            <DivContentTable key={columnName}>
-              {columnName}
+            <DivContentTable key={columnName.field}>
+              {columnName.display}
               {
                 Sortable ? (
-                  <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={() => ordering(columnName.toLowerCase())}>
+                  <IconButton disableRipple component="label" key={`${columnName.field}[button]`} size="small" onClick={() => ordering(columnName.field)}>
                     <ArrowDownward/>
                   </IconButton>
                 ) : ""
@@ -171,22 +168,6 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
           )
         })
       }
-      {/* {
-        ColumnHeaders.map((columnName, index) => {
-          return (
-            <DivContentTable key={columnName}>
-              {formatColumn(columnName)}
-              {
-                Sortable ? (
-                  <IconButton disableRipple component="label" key={`${columnName}[button]`} size="small" onClick={() => ordering(columnName.toLowerCase())}>
-                    <ArrowDownward/>
-                  </IconButton>
-                ) : ""
-              }
-            </DivContentTable>
-          )
-        })
-      } */}
       </DivLikeThead>
       <DivLikeThead>
         {
@@ -197,31 +178,34 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
           ): ""
         }
         {
-          Entity?.getDataFields().map((columnName, index) => {
+          Entity.getDataFields().map((columnName) => {
             return (
-              <InputFilter selectValue={state.condition[columnName] ?? ""} inputValue={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
+              <InputFilter 
+                selectValue={state.condition[columnName.field] ?? ""} 
+                inputValue={state.search[columnName.field] ?? ""} 
+                parentChangeHandler={(e) => handleInputSearch(e)} 
+                key={`inputFilter[${columnName.field}]`}
+                columnName={columnName}
+              />
             )
           })
         }
-        {/* {
-          ColumnHeaders.map((columnName, index) => {
-            return (
-              <InputFilter selectValue={state.condition[columnName] ?? ""} inputValue={state.search[columnName] ?? ""} parentChangeHandler={(e) => handleInputSearch(e)} key={`inputFilter[${columnName}]`} columnName={columnName}/>
-            )
-          })
-        } */}
       </DivLikeThead>
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
-          data.filteredList.map((item: dataPropsGeneric, index) => (
+          data.filteredList.map((item: DataPropsGeneric, index) => (
             <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={state.checkBoxes[`${item['id']}`]}/>
           )) : 
           Object.values(state.search).filter(x => x !== '').length > 0 ?
             <DivContentTable>
               No results to filter
             </DivContentTable> :
-            <Skeleton variant="rectangular" sx={{ fontSize: '3rem' }} />
+            <>
+              <Skeleton variant="rectangular" sx={{ fontSize: '2rem', margin: ".3rem 0" }} />
+              <Skeleton variant="rectangular" sx={{ fontSize: '2rem', margin: ".3rem 0" }} />
+              <Skeleton variant="rectangular" sx={{ fontSize: '2rem', margin: ".3rem 0" }} />
+            </>
       }
       </DivLikeTbody>
       <div>

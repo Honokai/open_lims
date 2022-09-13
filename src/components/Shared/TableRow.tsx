@@ -1,12 +1,12 @@
 import { Checkbox } from "@mui/material"
 import React from "react"
 import { DivContentTable, DivLikeRow } from "../../Helpers/StyledTags"
-import { dataPropsGeneric } from "../../Helpers/TypeHelpers"
+import { DataPropsGeneric } from "../../Helpers/TypeHelpers"
 
 interface RowProps {
   showCheckbox?: boolean
   index: number
-  item: dataPropsGeneric
+  item: DataPropsGeneric
   checked?: boolean
   handleCheckBox: (e: React.ChangeEvent<HTMLInputElement>) => void
 }

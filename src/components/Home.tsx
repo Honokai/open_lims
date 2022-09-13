@@ -14,7 +14,7 @@ const Home = () => {
   const [d, setD] = React.useState([])
   const {theme} = useTema()
   const objRef = React.useRef<SetorColumn>()
-  let teste = true
+  let teste = false 
 
   React.useEffect(() => {
     setLoading(true)
@@ -26,9 +26,6 @@ const Home = () => {
     }).then((r) => {
       return r.json()
     }).then((json) => {
-      let ColumnHeaders = Object.keys(json[0])
-      objRef.current = new SetorColumn(ColumnHeaders, [''])
-
       setD(json ?? [])
 
       setLoading(false)
@@ -41,11 +38,7 @@ const Home = () => {
         <Typography variant="h4" paragraph>
             Welcome, 
         </Typography>
-      {teste ? (
-        <Table Entity={new SetorColumn()}Sortable={true} ColumnHeaders={objRef.current?.getColumnNames() ?? []} showCheckbox={true} RowData={d} Theme={theme}/>
-      ) : (
-        <Table Sortable={true} Entity={new UserColumns()} ColumnHeaders={Object.keys(mySchedule[0])} RowData={mySchedule} showCheckbox={true}/>
-      )}
+        <Table Entity={new SetorColumn()}Sortable={true} showCheckbox={true} RowData={d} Theme={theme}/>
       </Container>
     </Layout>
   )

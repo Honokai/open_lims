@@ -40,7 +40,7 @@ export interface dataListType {
 }
 
 export interface TableProps {
-  Entity?: BaseColumn
+  Entity: BaseColumn
   ColumnHeaders?: Array<string>
   RowData?: Array<Object>
   Sortable?: boolean
@@ -53,7 +53,12 @@ export interface ProviderProps {
   children: React.ReactNode
 }
 
-export interface dataPropsGeneric {
+export interface DataPropsGeneric {
   id?: string,
   [key: string]: any
+}
+
+export interface DataFieldType {
+  field: string
+  display: string
 }

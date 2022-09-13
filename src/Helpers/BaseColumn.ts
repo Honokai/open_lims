@@ -1,13 +1,12 @@
+import { DataFieldType } from "./TypeHelpers"
 
 export class BaseColumn {
-  public columnNames: string[]
   public columnsType: string[]
   public conditionFilter: string[] = ['contains', 'starts_with', 'ends_with', 'equal', 'not equal']
-  public dataFields: string[]
+  public dataFields: DataFieldType[]
 
-  constructor(columnNames?: string[], columnsType?: string[], dataFields?: string[])
+  constructor(columnsType?: string[], dataFields?: DataFieldType[])
   {
-    this.columnNames = columnNames ?? []
     this.columnsType = columnsType ?? []
     this.dataFields = dataFields ?? []
   }
@@ -15,11 +14,6 @@ export class BaseColumn {
   public getConditionFilters()
   {
     return this.conditionFilter;
-  }
-
-  public getColumnNames()
-  {
-    return this.columnNames;
   }
 
   public getDataFields()

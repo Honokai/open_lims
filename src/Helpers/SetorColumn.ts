@@ -1,11 +1,10 @@
 import { BaseColumn } from "./BaseColumn";
 
 export class SetorColumn extends BaseColumn {
-  public dataFields = ['id', 'nome', 'created_at', 'updated_at']
-  public columnNames = ['ID', 'Setor', 'Data criação', 'Atualizado em'];
+  public dataFields = [{field: 'id', display: 'ID'}, {field: 'nome', display: 'Nome'}, {field: 'created_at', display: 'Data criação'}, {field: 'updated_at', display: 'Atualizado em'}]
 
-  constructor(columnNames?: string[], columnsType?: string[])
+  constructor(columnsType?: string[])
   {
-    super(columnNames, columnsType)
+    super(columnsType)
   }
 }

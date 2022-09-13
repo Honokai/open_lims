@@ -1,8 +1,9 @@
 import React from "react";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { DataFieldType } from "../../Helpers/TypeHelpers";
 
 interface InputProps {
-  columnName: string
+  columnName: DataFieldType
   selectValue: string
   inputValue: string
   parentChangeHandler: ([]: string[]) => void
@@ -24,6 +25,9 @@ export const InputFilter = ({ columnName, parentChangeHandler, selectValue, inpu
   function handleConditionChange(e: SelectChangeEvent)
   {
     setSearchInput({...searchInput, condition: e.target.value})
+    
+    if(searchInput.field !== "")
+      callForUpdate([e.target.name, searchInput.field, e.target.value ])
   }
 
   function callForUpdate(e: string[])
@@ -40,7 +44,7 @@ export const InputFilter = ({ columnName, parentChangeHandler, selectValue, inpu
       <FormControl sx={{ display: "flex", flex: 1, margin: "0 .4rem" }} size="small">
         <Select
           id={`condition[${columnName}]`}
-          name={`${columnName}`}
+          name={`${columnName.field}`}
           value={searchInput.condition}
           onChange={handleConditionChange}
           displayEmpty
@@ -52,9 +56,9 @@ export const InputFilter = ({ columnName, parentChangeHandler, selectValue, inpu
         </Select>
       </FormControl>
       <TextField
-        name={`${columnName}`}
+        name={`${columnName.field}`}
         sx={{margin: "0 .4rem"}}
-        size="small" placeholder={`${columnName.toUpperCase()}`}
+        size="small" placeholder={`${columnName.display}`}
         value={searchInput.field}
         onChange={(e) => handleChange(e)}
       />
