@@ -58,7 +58,7 @@ const SampleCreate = () => {
     <Layout>
       <Container sx={CustomContainerStyles}>
         <Typography variant="h4">
-          Sample {state?.schedule ? state.schedule : "nao"}
+          Sample
         </Typography>
         <ContainerStyled>
           <StyledDiv>

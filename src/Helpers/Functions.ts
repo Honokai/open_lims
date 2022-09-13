@@ -52,3 +52,19 @@ export function conditionalComparison(a: string[], operator: string): boolean
       return false
   }
 }
+
+export function whereIn(property: string, arrayValues: number[], listOfObjects: Object[])
+{
+  let r: Object[] = []
+
+  arrayValues.forEach((val) => {
+    let i = listOfObjects.find((v: GenericObjectKeyType) => {
+      return v[property] === val
+    })
+
+    if(i)
+      r.push(i)
+  })
+
+  return r
+}

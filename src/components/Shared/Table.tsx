@@ -2,7 +2,7 @@ import { ArrowDownward } from "@mui/icons-material";
 import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
-import { conditionalComparison, shouldOrder } from "../../Helpers/Functions";
+import { conditionalComparison, shouldOrder, whereIn } from "../../Helpers/Functions";
 import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
@@ -125,13 +125,13 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
 
   function showChecked()
   {
-    let marked: string[] = []
+    let marked: number[] = []
     Object.entries(state.checkBoxes).forEach(v => {
       if (v[1] === true)
-        marked.push(v[0])
+        marked.push(Number(v[0]))
     })
-    
-    navigate("sample/schedule", {state: { schedule: Object.values(marked).toString()}})
+
+    navigate("sample/schedule", {state: { schedule: whereIn('id', marked, data.filteredList) ?? null}})
   }
 
   return (

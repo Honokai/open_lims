@@ -13,8 +13,6 @@ const Home = () => {
   const {setLoading} = useTable()
   const [d, setD] = React.useState([])
   const {theme} = useTema()
-  const objRef = React.useRef<SetorColumn>()
-  let teste = false 
 
   React.useEffect(() => {
     setLoading(true)
