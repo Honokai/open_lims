@@ -134,6 +134,11 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
     navigate("sample/createv2", {state: { schedules: whereIn('id', marked, data.filteredList) ?? null}})
   }
 
+  function editableHandler(idItem: number, column: string, value: string)
+  {
+    console.log(idItem, column, value)
+  }
+
   return (
     <DivLikeTable>
       <Button sx={{margin: "0 .3rem"}} onClick={showChecked} variant="contained">Iniciar</Button>
@@ -196,7 +201,12 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: DataPropsGeneric, index) => (
-            <TableRow editable={editable} key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={componentState.checkBoxes[`${item['id']}`]}/>
+            <TableRow editable={editable} key={`row[${index}]`} 
+              index={index} item={item} showCheckbox={showCheckbox} 
+              handleCheckBox={handleCheckBox} 
+              checked={componentState.checkBoxes[`${item['id']}`]}
+              contentEditableHandler={editableHandler}
+            />
           )) :
           Object.values(componentState.search).filter(x => x !== '').length > 0 && data.list.length > 0?
             <DivContentTable>
