@@ -10,7 +10,7 @@ interface RowProps {
   editable?: boolean
   checked?: boolean
   handleCheckBox: (e: React.ChangeEvent<HTMLInputElement>) => void
-  contentEditableHandler?: (id: number, column: string, value: string) => void 
+  contentEditableHandler?: (id: number, column: string, value: string) => void
 }
 
 export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, editable, contentEditableHandler}: RowProps) => {

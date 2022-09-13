@@ -27,10 +27,12 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
 
       Object.assign(dataCopy, data.list)
 
-      let filtersCount = Object.values(componentState.search).filter(x => x !== '').length
+      let filters = Object.entries(componentState.search).filter(x => x[1] !== '')
+      let filtersCount = filters.length
       if (filtersCount > 0) {
         let dataFiltered = dataCopy.filter((item: GenericObjectKeyType) => {
-          let c = Object.entries(componentState.search).filter((val) => {
+          let c = filters.filter((val) => {
+            console.log(item[val[0]], val[1])
             return conditionalComparison([item[val[0]], val[1]], componentState.condition[val[0]])
           })
 
@@ -50,6 +52,7 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
 
       setComponentState({...componentState, loading: false})
     }
+    console.log(componentState.search, componentState.condition)
   }, [componentState.search])
 
   React.useEffect(() => {
@@ -99,10 +102,12 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
     setComponentState({
       ...componentState,
       search: {
+        ...componentState.search,
         [e[0]]: e[1],
       },
       condition: {
-        [e[0]]: e[2]
+        ...componentState.condition,
+        [e[0]]:e[1] !== '' ? e[2] : ''
       }
     })
   }
@@ -131,7 +136,7 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
         marked.push(Number(v[0]))
     })
 
-    navigate("sample/createv2", {state: { schedules: whereIn('id', marked, data.filteredList) ?? null}})
+    navigate("/sample/createv2", {state: { schedules: whereIn('id', marked, data.filteredList) ?? null}})
   }
 
   function editableHandler(idItem: number, column: string, value: string)

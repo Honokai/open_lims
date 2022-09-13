@@ -13,7 +13,7 @@ const UserList = () => {
 
   React.useEffect(() => {
     setLoading(true)
-    fetch("http://api.teste.com/api/users",{
+    fetch(`${process.env.REACT_APP_URL_API}/users`,{
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_TOKEN_API}`
       }
@@ -31,7 +31,7 @@ const UserList = () => {
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
-        <Table entity={new UserColumns()} sortable={true} rowData={data} theme={theme}/>
+        <Table entity={new UserColumns()} showCheckbox sortable={true} rowData={data} theme={theme}/>
       </Container>
     </Layout>
   )

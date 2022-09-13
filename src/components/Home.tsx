@@ -17,7 +17,7 @@ const Home = () => {
   React.useEffect(() => {
     setLoading(true)
 
-    fetch("http://api.teste.com/api/setores",{
+    fetch(`${process.env.REACT_APP_URL_API}/users`,{
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_TOKEN_API}`
       }
