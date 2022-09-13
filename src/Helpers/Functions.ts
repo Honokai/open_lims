@@ -31,7 +31,6 @@ export function shouldOrder(filteredArray: Object[], filteredColumn: string, fil
   })
 
   if (filterOrder === 'desc') {
-    console.log('reverse')
     t.reverse()
   }
   
@@ -46,6 +45,15 @@ export function conditionalComparison(a: string[], operator: string): boolean
   
     case 'equals':
       return String(a[0]).toLowerCase() === String(a[1]).toLowerCase()
+
+    case 'starts_with':
+      return String(a[0]).toLowerCase().startsWith(String(a[1]).toLowerCase())
+    
+    case 'ends_with':
+      return String(a[0]).toLowerCase().endsWith(String(a[1]).toLowerCase())
+
+    case 'not_equal':
+      return String(a[0]).toLowerCase() !== String(a[1]).toLowerCase()
 
     default:
       console.log('eeeeeee')

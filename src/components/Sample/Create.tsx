@@ -87,7 +87,7 @@ const SampleCreate = () => {
                 </MenuItem>
                 <MenuItem value={10}>Ten</MenuItem>
                 <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
+                <MenuItem value={30}>aadasd</MenuItem>
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 120}} size="small">
@@ -104,7 +104,7 @@ const SampleCreate = () => {
                 </MenuItem>
                 <MenuItem value={10}>Ten</MenuItem>
                 <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>lakshjdaslkjdlasjdasjdkaaaaaaaaaaaweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</MenuItem>
+                <MenuItem value={30}>aadasd</MenuItem>
               </Select>
             </FormControl>
           </StyledDiv>

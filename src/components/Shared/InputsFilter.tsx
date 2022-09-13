@@ -52,7 +52,9 @@ export const InputFilter = ({ columnName, parentChangeHandler, selectValue, inpu
         >
           <MenuItem value={"contains"}>Contains</MenuItem>
           <MenuItem value={"equals"}>Equals</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value={"starts_with"}>Starts with</MenuItem>
+          <MenuItem value={"ends_with"}>Ends with</MenuItem>
+          <MenuItem value={"not_equal"}>Not equal</MenuItem>
         </Select>
       </FormControl>
       <TextField
