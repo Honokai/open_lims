@@ -18,6 +18,7 @@ export function shouldOrder(filteredArray: Object[], filteredColumn: string, fil
   let t: Object[] = filteredArray
 
   t.sort((i1: GenericObjectKeyType, i2: GenericObjectKeyType) => {
+    console.log(i1[filteredColumn] < i2[filteredColumn], String(i1[filteredColumn]), String(i2[filteredColumn]))
     if (i1[filteredColumn] < i2[filteredColumn]) {
       return -1
     }
@@ -30,6 +31,7 @@ export function shouldOrder(filteredArray: Object[], filteredColumn: string, fil
   })
 
   if (filterOrder === 'desc') {
+    console.log('reverse')
     t.reverse()
   }
   
