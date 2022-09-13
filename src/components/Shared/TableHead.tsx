@@ -9,9 +9,10 @@ interface TableHeadProps {
   showCheckbox?: boolean
   allCheckboxChecked?: boolean
   checkBoxHandler?: (event: React.ChangeEvent<HTMLInputElement>, all?: 'check'|'uncheck') => void
+  orderingHandler?: (columnName: string) => void
 }
 
-export const TableHead = ({ showCheckbox, allCheckboxChecked, entity, checkBoxHandler, sortable }: TableHeadProps) => {
+export const TableHead = ({ showCheckbox, allCheckboxChecked, entity, checkBoxHandler, sortable, orderingHandler }: TableHeadProps) => {
   return (
     <DivLikeThead>
       {
@@ -39,7 +40,14 @@ export const TableHead = ({ showCheckbox, allCheckboxChecked, entity, checkBoxHa
               {columnName.display}
               {
                 sortable ? (
-                  <IconButton disableRipple component="label" key={`${columnName.field}[button]`} size="small" /*onClick={() => ordering(columnName.field)}*/ >
+                  <IconButton disableRipple 
+                    component="label"
+                    key={`${columnName.field}[button]`}
+                    size="small" onClick={() => {
+                      if (orderingHandler)
+                        orderingHandler(columnName.field)
+                      }}
+                  >
                     <ArrowDownward/>
                   </IconButton>
                 ) : ""

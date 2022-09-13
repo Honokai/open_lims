@@ -155,6 +155,7 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
         showCheckbox={showCheckbox}
         allCheckboxChecked={componentState.checkAll}
         checkBoxHandler={showCheckbox ? handleCheckBox : undefined}
+        orderingHandler={ordering}
       />
       <TableFilters entity={entity}
         searchable={searchable}
@@ -162,29 +163,6 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
         parentInputSearchHandler={handleInputSearch}
         parentStateValues={componentState}
       />
-      {/* <DivLikeThead>
-        {
-          showCheckbox ? (
-            <DivContentTable>
-            
-            </DivContentTable>
-          ): ""
-        }
-        {
-          searchable ?
-          entity.getDataFields().map((columnName) => {
-            return (
-              <InputFilter 
-                selectValue={componentState.condition[columnName.field] ?? ""} 
-                inputValue={componentState.search[columnName.field] ?? ""} 
-                parentChangeHandler={(e) => handleInputSearch(e)} 
-                key={`inputFilter[${columnName.field}]`}
-                columnName={columnName}
-              />
-            )
-          }) : ""
-        }
-      </DivLikeThead> */}
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
