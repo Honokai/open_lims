@@ -40,13 +40,13 @@ export interface dataListType {
 }
 
 export interface TableProps {
-  Entity: BaseColumn
-  ColumnHeaders?: Array<string>
-  RowData?: Array<Object>
-  Sortable?: boolean
-  Theme?: "light"|"dark"
-  Striped?: boolean
+  entity: BaseColumn
+  columnHeaders?: Array<string>
+  rowData?: Array<Object>
+  sortable?: boolean
+  theme?: "light"|"dark"
   showCheckbox?: boolean
+  editable?: boolean
 }
 
 export interface ProviderProps {

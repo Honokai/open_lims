@@ -8,21 +8,18 @@ import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableProps) => {
-  const [ data, setData ] = React.useState<dataListType>({list: RowData ?? [], filteredList: RowData ?? [], new: []})
+const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: TableProps) => {
+  const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
   const [ componentState, setComponentState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
   const navigate = useNavigate()
-  const { state }: GenericObjectKeyType = useLocation()
 
   React.useEffect(() => {
-    if(RowData)
-      setData({...data, list: RowData, filteredList: RowData})
-    else 
-      console.log(state)
-  }, [RowData])
+    if(rowData)
+      setData({...data, list: rowData, filteredList: rowData})
+  }, [rowData])
 
   React.useEffect(() => {
     if(Object.keys(componentState.search).length) {
@@ -91,7 +88,7 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
       })
 
       setComponentState({
-        ...state,
+        ...componentState,
         checkAll: !componentState.checkAll,
         checkBoxes: checkBoxesCopy
       })
@@ -100,7 +97,7 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
 
   function handleInputSearch(e: string[]) {
     setComponentState({
-      ...state,
+      ...componentState,
       search: {
         [e[0]]: e[1],
       },
@@ -134,7 +131,7 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
         marked.push(Number(v[0]))
     })
 
-    navigate("sample/schedule", {state: { schedule: whereIn('id', marked, data.filteredList) ?? null}})
+    navigate("sample/createv2", {state: { schedules: whereIn('id', marked, data.filteredList) ?? null}})
   }
 
   return (
@@ -156,12 +153,12 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
         ): ""
       }
       {
-        Entity?.getDataFields().map((columnName) => {
+        entity?.getDataFields().map((columnName) => {
           return (
             <DivContentTable key={columnName.field}>
               {columnName.display}
               {
-                Sortable ? (
+                sortable ? (
                   <IconButton disableRipple component="label" key={`${columnName.field}[button]`} size="small" onClick={() => ordering(columnName.field)}>
                     <ArrowDownward/>
                   </IconButton>
@@ -181,7 +178,8 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
           ): ""
         }
         {
-          Entity.getDataFields().map((columnName) => {
+          showCheckbox ?
+          entity.getDataFields().map((columnName) => {
             return (
               <InputFilter 
                 selectValue={componentState.condition[columnName.field] ?? ""} 
@@ -191,14 +189,14 @@ const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableP
                 columnName={columnName}
               />
             )
-          })
+          }) : ""
         }
       </DivLikeThead>
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: DataPropsGeneric, index) => (
-            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={componentState.checkBoxes[`${item['id']}`]}/>
+            <TableRow editable={editable} key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={componentState.checkBoxes[`${item['id']}`]}/>
           )) :
           Object.values(componentState.search).filter(x => x !== '').length > 0 && data.list.length > 0?
             <DivContentTable>

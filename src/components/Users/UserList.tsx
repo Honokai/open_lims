@@ -31,7 +31,7 @@ const UserList = () => {
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
-        <Table Entity={new UserColumns()} Sortable={true} RowData={data} Theme={theme}/>
+        <Table entity={new UserColumns()} sortable={true} rowData={data} theme={theme}/>
       </Container>
     </Layout>
   )

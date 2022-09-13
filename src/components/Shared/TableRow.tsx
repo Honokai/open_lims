@@ -7,11 +7,16 @@ interface RowProps {
   showCheckbox?: boolean
   index: number
   item: DataPropsGeneric
+  editable?: boolean
   checked?: boolean
   handleCheckBox: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked}: RowProps) => {
+export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, editable}: RowProps) => {
+  function ClicouDuasVezes()
+  {
+    alert('e')
+  }
   return (
     <DivLikeRow>
       {
@@ -32,7 +37,7 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked}: R
       {
         Object.entries(item).map((v, i) => {
           return (
-            <DivContentTable key={`rowContent[${index}][${i}]`} id={`${index}[${i}]`}>
+            <DivContentTable onDoubleClick={ClicouDuasVezes} key={`rowContent[${index}][${i}]`} id={`${index}[${i}]`}>
               {v[1]}
             </DivContentTable>
           )

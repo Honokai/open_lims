@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import styled from "@emotion/styled";
-import { FormatDateToISO } from "../../Helpers/Functions";
+import { formatDateToISO } from "../../Helpers/Functions";
 import Layout from "../Shared/Layout";
 import { useLocation } from "react-router-dom";
 import { GenericObjectKeyType } from "../../Helpers/TypeHelpers";
@@ -116,14 +116,14 @@ const SampleCreate = () => {
               id="outlined-required"
               InputLabelProps={{ shrink: true, required: true }}
               label="Received"
-              defaultValue={FormatDateToISO()}
+              defaultValue={formatDateToISO()}
             />
             <TextField
               size="small"
               required
               id="outlined-required"
               label="Required"
-              defaultValue={FormatDateToISO(new Date("10/02/2022"))}
+              defaultValue={formatDateToISO(new Date("10/02/2022"))}
             />
           </StyledDiv>
           <StyledDiv>

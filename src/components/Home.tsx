@@ -36,7 +36,7 @@ const Home = () => {
         <Typography variant="h4" paragraph>
             Welcome, 
         </Typography>
-        <Table Entity={new SetorColumn()}Sortable={true} showCheckbox={true} RowData={d} Theme={theme}/>
+        <Table entity={new SetorColumn()} sortable={true} showCheckbox={true} rowData={d} theme={theme}/>
       </Container>
     </Layout>
   )
