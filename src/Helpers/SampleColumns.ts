@@ -12,8 +12,4 @@ export class SampleColumns extends BaseColumn {
     {field: 'analysis', display: 'Analysis'},
   ]
 
-  constructor(columnsType?: string[])
-  {
-    super(columnsType)
-  }
 }

@@ -61,4 +61,6 @@ export interface DataPropsGeneric {
 export interface DataFieldType {
   field: string
   display: string
+  showFilter?: boolean
+  filterType?: "text"|"date"|"number"
 }
