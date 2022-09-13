@@ -9,7 +9,7 @@ interface RowProps {
   item: DataPropsGeneric
   editable?: boolean
   checked?: boolean
-  handleCheckBox: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleCheckBox?: (e: React.ChangeEvent<HTMLInputElement>) => void
   contentEditableHandler?: (id: number, column: string, value: string) => void
 }
 
@@ -52,7 +52,11 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, ed
               id={`${item['id']}`}
               value={item['id']}
               checked={checked ?? false}
-              onChange={(e) => handleCheckBox(e)}
+              onChange={(e) => {
+                if(handleCheckBox)
+                  handleCheckBox(e)
+                }
+              }
               inputProps={{ 'aria-label': 'controlled' }}
             />  
           </DivContentTable>

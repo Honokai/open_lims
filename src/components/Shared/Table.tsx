@@ -3,16 +3,18 @@ import { IconButton, Checkbox, Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { conditionalComparison, shouldOrder, whereIn } from "../../Helpers/Functions";
-import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps } from "../../Helpers/TypeHelpers";
+import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps, TableStateProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
 import { useNavigate } from "react-router-dom";
+import { TableHead } from "./TableHead";
+import { TableFilters } from "./TableFilters";
 
-const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: TableProps) => {
+const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searchable }: TableProps) => {
   const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ componentState, setComponentState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
+  const [ componentState, setComponentState ] = React.useState<TableStateProps>({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
   const navigate = useNavigate()
 
@@ -73,6 +75,7 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
   }
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all?: 'check'|'uncheck') {
+    console.log('entrei')
     if (event && !all) {
       setComponentState({
         ...componentState,
@@ -147,37 +150,19 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
       <Button sx={{margin: "0 .3rem"}} onClick={showChecked} variant="contained">Iniciar</Button>
       <Button sx={{margin: "0 .3rem"}} onClick={() => handleDataAddition()} variant="contained">Save</Button>
       <ButtonLoading/>
-      <DivLikeThead>
-      {
-        showCheckbox ? (
-          <div>
-            <Checkbox
-              key={`all`}
-              value={componentState.checkAll}
-              onChange={(e) => handleCheckBox(e, componentState.checkAll ? 'uncheck' : 'check')}
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-          </div>
-        ): ""
-      }
-      {
-        entity?.getDataFields().map((columnName) => {
-          return (
-            <DivContentTable key={columnName.field}>
-              {columnName.display}
-              {
-                sortable ? (
-                  <IconButton disableRipple component="label" key={`${columnName.field}[button]`} size="small" onClick={() => ordering(columnName.field)}>
-                    <ArrowDownward/>
-                  </IconButton>
-                ) : ""
-              }
-            </DivContentTable>
-          )
-        })
-      }
-      </DivLikeThead>
-      <DivLikeThead>
+      <TableHead entity={entity}
+        sortable={sortable}
+        showCheckbox={showCheckbox}
+        allCheckboxChecked={componentState.checkAll}
+        checkBoxHandler={showCheckbox ? handleCheckBox : undefined}
+      />
+      <TableFilters entity={entity}
+        searchable={searchable}
+        showCheckbox={showCheckbox}
+        parentInputSearchHandler={handleInputSearch}
+        parentStateValues={componentState}
+      />
+      {/* <DivLikeThead>
         {
           showCheckbox ? (
             <DivContentTable>
@@ -186,7 +171,7 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
           ): ""
         }
         {
-          showCheckbox ?
+          searchable ?
           entity.getDataFields().map((columnName) => {
             return (
               <InputFilter 
@@ -199,14 +184,15 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
             )
           }) : ""
         }
-      </DivLikeThead>
+      </DivLikeThead> */}
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: DataPropsGeneric, index) => (
             <TableRow editable={editable} key={`row[${index}]`} 
-              index={index} item={item} showCheckbox={showCheckbox} 
-              handleCheckBox={handleCheckBox} 
+              index={index} item={item} 
+              showCheckbox={showCheckbox} 
+              handleCheckBox={showCheckbox ? handleCheckBox : undefined} 
               checked={componentState.checkBoxes[`${item['id']}`]}
               contentEditableHandler={editableHandler}
             />

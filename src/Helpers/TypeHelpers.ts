@@ -47,6 +47,7 @@ export interface TableProps {
   theme?: "light"|"dark"
   showCheckbox?: boolean
   editable?: boolean
+  searchable?: boolean
 }
 
 export interface ProviderProps {
@@ -63,4 +64,21 @@ export interface DataFieldType {
   display: string
   showFilter?: boolean
   filterType?: "text"|"date"|"number"
+}
+
+export interface TableStateProps {
+  loading: boolean
+  checkAll: boolean
+  checkBoxes: GenericObjectKeyType
+  search: GenericObjectKeyType
+  condition: GenericObjectKeyType
+  ordering: {column: string, order: 'asc'|'desc'}
+}
+
+export interface TableFiltersProps {
+  entity: BaseColumn
+  searchable?: boolean
+  showCheckbox?: boolean
+  parentInputSearchHandler?: (e: string[]) => void
+  parentStateValues: TableStateProps
 }
