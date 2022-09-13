@@ -8,30 +8,33 @@ import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
 import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableProps) => {
-  const [ data, setData ] = React.useState<dataListType>({list: [], filteredList: [], new: []})
-  const [ state, setState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
+const Table = ({RowData, Sortable, Theme, Striped, showCheckbox, Entity}: TableProps) => {
+  const [ data, setData ] = React.useState<dataListType>({list: RowData ?? [], filteredList: RowData ?? [], new: []})
+  const [ componentState, setComponentState ] = React.useState({loading: false, checkAll: false, checkBoxes: {} as GenericObjectKeyType, search: {} as GenericObjectKeyType, condition: {} as GenericObjectKeyType, ordering: {column: '', order: 'asc'}})
   const tableBody = React.useRef<HTMLDivElement|null>(null);
   const navigate = useNavigate()
+  const { state }: GenericObjectKeyType = useLocation()
 
   React.useEffect(() => {
     if(RowData)
       setData({...data, list: RowData, filteredList: RowData})
+    else 
+      console.log(state)
   }, [RowData])
 
   React.useEffect(() => {
-    if(Object.keys(state.search).length) {
+    if(Object.keys(componentState.search).length) {
       let dataCopy: Object[] = []
 
       Object.assign(dataCopy, data.list)
 
-      let filtersCount = Object.values(state.search).filter(x => x !== '').length
+      let filtersCount = Object.values(componentState.search).filter(x => x !== '').length
       if (filtersCount > 0) {
         let dataFiltered = dataCopy.filter((item: GenericObjectKeyType) => {
-          let c = Object.entries(state.search).filter((val) => {
-            return conditionalComparison([item[val[0]], val[1]], state.condition[val[0]])
+          let c = Object.entries(componentState.search).filter((val) => {
+            return conditionalComparison([item[val[0]], val[1]], componentState.condition[val[0]])
           })
 
           return c.length === filtersCount ? true : false
@@ -48,55 +51,55 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
         })
       }
 
-      setState({...state, loading: false})
+      setComponentState({...componentState, loading: false})
     }
-  }, [state.search])
+  }, [componentState.search])
 
   React.useEffect(() => {
-    if (state.ordering.column !== '') {
+    if (componentState.ordering.column !== '') {
       setData({
         ...data,
-        filteredList: shouldOrder(data.filteredList, state.ordering.column, state.ordering.order)
+        filteredList: shouldOrder(data.filteredList, componentState.ordering.column, componentState.ordering.order)
       })
     }
-  }, [state.ordering])
+  }, [componentState.ordering])
 
   function ordering(colunaOrdenada: string)
   {
-    setState({...state,
+    setComponentState({...componentState,
       ordering: {
         column: colunaOrdenada,
-        order: state.ordering.order !== 'asc' ? 'asc' : 'desc'
+        order: componentState.ordering.order !== 'asc' ? 'asc' : 'desc'
       }
     })
   }
 
   function handleCheckBox(event: React.ChangeEvent<HTMLInputElement>, all?: 'check'|'uncheck') {
     if (event && !all) {
-      setState({
-        ...state,
+      setComponentState({
+        ...componentState,
         checkBoxes: {
-          ...state.checkBoxes,
+          ...componentState.checkBoxes,
           [event.currentTarget.id]: event.currentTarget.checked}
       })
     } else {
-      let checkBoxesCopy = Object.assign({}, state.checkBoxes)
+      let checkBoxesCopy = Object.assign({}, componentState.checkBoxes)
 
       let allCheckBoxes: NodeListOf<HTMLInputElement>  = document.querySelectorAll("input[type='checkbox'][id]")
       allCheckBoxes.forEach((item) => {
         checkBoxesCopy[item.id] = all === 'uncheck' ? false : true
       })
 
-      setState({
+      setComponentState({
         ...state,
-        checkAll: !state.checkAll,
+        checkAll: !componentState.checkAll,
         checkBoxes: checkBoxesCopy
       })
     }
   }
 
   function handleInputSearch(e: string[]) {
-    setState({
+    setComponentState({
       ...state,
       search: {
         [e[0]]: e[1],
@@ -126,7 +129,7 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
   function showChecked()
   {
     let marked: number[] = []
-    Object.entries(state.checkBoxes).forEach(v => {
+    Object.entries(componentState.checkBoxes).forEach(v => {
       if (v[1] === true)
         marked.push(Number(v[0]))
     })
@@ -145,8 +148,8 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
           <div>
             <Checkbox
               key={`all`}
-              value={state.checkAll}
-              onChange={(e) => handleCheckBox(e, state.checkAll ? 'uncheck' : 'check')}
+              value={componentState.checkAll}
+              onChange={(e) => handleCheckBox(e, componentState.checkAll ? 'uncheck' : 'check')}
               inputProps={{ 'aria-label': 'controlled' }}
             />
           </div>
@@ -181,8 +184,8 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
           Entity.getDataFields().map((columnName) => {
             return (
               <InputFilter 
-                selectValue={state.condition[columnName.field] ?? ""} 
-                inputValue={state.search[columnName.field] ?? ""} 
+                selectValue={componentState.condition[columnName.field] ?? ""} 
+                inputValue={componentState.search[columnName.field] ?? ""} 
                 parentChangeHandler={(e) => handleInputSearch(e)} 
                 key={`inputFilter[${columnName.field}]`}
                 columnName={columnName}
@@ -195,9 +198,9 @@ const Table = ({ColumnHeaders, RowData, Sortable, Theme, Striped, showCheckbox, 
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: DataPropsGeneric, index) => (
-            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={state.checkBoxes[`${item['id']}`]}/>
-          )) : 
-          Object.values(state.search).filter(x => x !== '').length > 0 ?
+            <TableRow key={`row[${index}]`} index={index} item={item} showCheckbox={showCheckbox} handleCheckBox={handleCheckBox} checked={componentState.checkBoxes[`${item['id']}`]}/>
+          )) :
+          Object.values(componentState.search).filter(x => x !== '').length > 0 && data.list.length > 0?
             <DivContentTable>
               No results to filter
             </DivContentTable> :
