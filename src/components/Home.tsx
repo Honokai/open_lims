@@ -34,9 +34,9 @@ const Home = () => {
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
         <Typography variant="h4" paragraph>
-            Welcome, 
+            Welcome,
         </Typography>
-        <Table entity={new SetorColumn()} sortable={true} showCheckbox={true} rowData={d} theme={theme}/>
+        <Table entity={new UserColumns()} sortable={true} showCheckbox={true} rowData={d} theme={theme}/>
       </Container>
     </Layout>
   )

@@ -24,7 +24,7 @@ const UserList = () => {
 
       setLoading(false)
     }).catch(e => {
-      console.log(e)
+      console.log(e, "Erro ao buscar dados")
     })
   }, [])
 

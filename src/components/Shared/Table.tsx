@@ -32,7 +32,6 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
       if (filtersCount > 0) {
         let dataFiltered = dataCopy.filter((item: GenericObjectKeyType) => {
           let c = filters.filter((val) => {
-            console.log(item[val[0]], val[1])
             return conditionalComparison([item[val[0]], val[1]], componentState.condition[val[0]])
           })
 
@@ -52,7 +51,6 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
 
       setComponentState({...componentState, loading: false})
     }
-    console.log(componentState.search, componentState.condition)
   }, [componentState.search])
 
   React.useEffect(() => {
@@ -213,7 +211,7 @@ const Table = ({rowData, sortable, theme, showCheckbox, entity, editable}: Table
               contentEditableHandler={editableHandler}
             />
           )) :
-          Object.values(componentState.search).filter(x => x !== '').length > 0 && data.list.length > 0?
+          Object.values(componentState.search).filter(x => x !== '').length > 0 && data.list.length > 0 ?
             <DivContentTable>
               No results to filter
             </DivContentTable> :

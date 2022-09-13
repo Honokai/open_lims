@@ -11,5 +11,4 @@ export class SampleColumns extends BaseColumn {
     {field: 'unity', display: 'Un'},
     {field: 'analysis', display: 'Analysis'},
   ]
-
 }

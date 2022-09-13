@@ -26,7 +26,6 @@ export const TableContextProvider = ({ children }: ProviderProps) => {
 
         return c.length === filtersCount ? true : false
       })
-      console.log(searchParams)
       setData({...data, filteredList: o})
       setLoading(false)
     }
