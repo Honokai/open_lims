@@ -7,13 +7,10 @@ export const TableFilters = ({searchable, entity, showCheckbox, parentInputSearc
     <DivLikeThead>
       {
         showCheckbox ? (
-          <DivContentTable>
-          
-          </DivContentTable>
+          <div></div>
         ): ""
       }
       {
-        searchable ?
         entity.getDataFields().map((columnName) => {
           if(columnName.showFilter) {
             return (
@@ -32,7 +29,7 @@ export const TableFilters = ({searchable, entity, showCheckbox, parentInputSearc
           } else {
             return <div></div>
           }
-        }) : ""
+        })
       }
     </DivLikeThead>
   )
