@@ -167,7 +167,9 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
       {
         data.filteredList.length > 0 ?
           data.filteredList.map((item: DataPropsGeneric, index) => (
-            <TableRow editable={editable} key={`row[${index}]`} 
+            <TableRow
+              editable={editable}
+              key={`row[${index}]`} 
               index={index} item={item} 
               showCheckbox={showCheckbox} 
               handleCheckBox={showCheckbox ? handleCheckBox : undefined} 
