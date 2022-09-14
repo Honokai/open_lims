@@ -9,13 +9,16 @@ word-break: break-word;
 `
 
 export const DivLikeTable = styled.div`
-  flex: 1;
+  height: 100%;
   min-width: 500px;
+  display: flex;
   margin: 0 1rem;
   padding: .5rem 1rem;
   border-radius: .2rem;
   border: 1px solid gray;
-  // overflow: hidden;
+  flex-direction: column;
+  // overflow: auto;
+  overflow: hidden;
   // #body > div:nth-of-type(even) {
   //   background-color: "#d4d4d4";
   //   color:"#fff";
@@ -25,6 +28,7 @@ export const DivLikeTable = styled.div`
 export const DivLikeThead = styled.div`
   padding: .3rem 0;
   display: flex;
+  flex: 1
   text-align: center;
   border-bottom: 2px solid gray;
   & * {
@@ -33,15 +37,17 @@ export const DivLikeThead = styled.div`
 `
 
 export const DivLikeTbody = styled.div`
+  flex: 1
   margin: .3rem 0;
   display: flex;
-  // height: 85%;
+  height: 70%;
   flex-direction: column;
   text-align: center;
-  // overflow: auto;
+  overflow: auto;
 `
 
 export const DivLikeRow = styled.div`
+  flex: 12;
   display: flex;
   flex: 1;
   border-radius: 0.2rem;

@@ -33,9 +33,6 @@ const Home = () => {
   return (
     <Layout>
       <Container sx={{height: "100%", padding: "3rem 0"}}>
-        <Typography variant="h4" paragraph>
-            Welcome, 
-        </Typography>
         <Table entity={new UserColumns()} sortable showCheckbox rowData={d} theme={theme}/>
       </Container>
     </Layout>

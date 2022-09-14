@@ -6,7 +6,7 @@ import { conditionalComparison, shouldOrder, whereIn } from "../../Helpers/Funct
 import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps, TableStateProps } from "../../Helpers/TypeHelpers";
 import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
-import { DivContentTable, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
+import { DivContentTable, DivLikeRow, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
 import { useNavigate } from "react-router-dom";
 import { TableHead } from "./TableHead";
@@ -147,9 +147,11 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
 
   return (
     <DivLikeTable>
+      <div>
       <Button sx={{margin: "0 .3rem"}} onClick={showChecked} variant="contained">Iniciar</Button>
       <Button sx={{margin: "0 .3rem"}} onClick={() => handleDataAddition()} variant="contained">Save</Button>
       <ButtonLoading/>
+      </div>
       <TableHead entity={entity}
         sortable={sortable}
         showCheckbox={showCheckbox}
@@ -188,11 +190,11 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
             </>
       }
       </DivLikeTbody>
-      <div>
+      <DivLikeRow>
         <h4>
           Exibindo {data.filteredList?.length}
         </h4>
-      </div>
+      </DivLikeRow>
     </DivLikeTable>
   )
 }
