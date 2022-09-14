@@ -45,7 +45,7 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, ed
     <DivLikeRow>
       {
         showCheckbox ? (
-          <DivContentTable>
+          <DivContentTable style={{flex: 1}}>
             <Checkbox
               disableRipple
               key={`checkbox[${index}]`}

@@ -40,7 +40,7 @@ export const InputFilter = ({ columnName, parentChangeHandler, selectValue, inpu
   }
 
   return(
-    <div>
+    <div style={{flex: "2"}}>
       <FormControl sx={{ display: "flex", flex: 1, margin: "0 .4rem" }} size="small">
         <Select
           id={`condition[${columnName}]`}

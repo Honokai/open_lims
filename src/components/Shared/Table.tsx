@@ -191,9 +191,9 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
       }
       </DivLikeTbody>
       <DivLikeRow>
-        <h4>
+        <h5>
           Exibindo {data.filteredList?.length}
-        </h4>
+        </h5>
       </DivLikeRow>
     </DivLikeTable>
   )

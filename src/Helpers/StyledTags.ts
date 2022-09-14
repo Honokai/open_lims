@@ -1,12 +1,15 @@
 import styled from "@emotion/styled";
 
 export const DivContentTable = styled.div`
-flex: 1 1 0px;
-display: flex;
-justify-content: center;
-align-items: center;
-word-break: break-word;
-`
+  flex: 2 2 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+` 
 
 export const DivLikeTable = styled.div`
   height: 100%;
@@ -17,18 +20,13 @@ export const DivLikeTable = styled.div`
   border-radius: .2rem;
   border: 1px solid gray;
   flex-direction: column;
-  // overflow: auto;
   overflow: hidden;
-  // #body > div:nth-of-type(even) {
-  //   background-color: "#d4d4d4";
-  //   color:"#fff";
-  // }
 `
 
 export const DivLikeThead = styled.div`
   padding: .3rem 0;
   display: flex;
-  flex: 1
+  // flex: 1;
   text-align: center;
   border-bottom: 2px solid gray;
   & * {
@@ -37,7 +35,7 @@ export const DivLikeThead = styled.div`
 `
 
 export const DivLikeTbody = styled.div`
-  flex: 1
+  // flex: 1
   margin: .3rem 0;
   display: flex;
   height: 70%;
@@ -47,8 +45,7 @@ export const DivLikeTbody = styled.div`
 `
 
 export const DivLikeRow = styled.div`
-  flex: 12;
+  // flex: 12;
   display: flex;
-  flex: 1;
   border-radius: 0.2rem;
 `

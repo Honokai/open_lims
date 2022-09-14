@@ -27,7 +27,7 @@ export const TableFilters = ({searchable, entity, showCheckbox, parentInputSearc
               />
             )
           } else {
-            return <div></div>
+            return <div style={{flex: "2"}}></div>
           }
         })
       }

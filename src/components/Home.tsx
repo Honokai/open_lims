@@ -32,7 +32,7 @@ const Home = () => {
   
   return (
     <Layout>
-      <Container sx={{height: "100%", padding: "3rem 0"}}>
+      <Container maxWidth="xl" sx={{height: "100%", padding: "3rem 0"}}>
         <Table entity={new UserColumns()} sortable showCheckbox rowData={d} theme={theme}/>
       </Container>
     </Layout>
