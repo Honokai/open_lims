@@ -15,19 +15,23 @@ export const TableFilters = ({searchable, entity, showCheckbox, parentInputSearc
       {
         searchable ?
         entity.getDataFields().map((columnName) => {
-          return (
-            <InputFilter 
-              selectValue={parentStateValues.condition[columnName.field] ?? ""} 
-              inputValue={parentStateValues.search[columnName.field] ?? ""} 
-              parentChangeHandler={(e) => {
-                if(parentInputSearchHandler)
-                  parentInputSearchHandler(e)
-                }
-              } 
-              key={`inputFilter[${columnName.field}]`}
-              columnName={columnName}
-            />
-          )
+          if(columnName.showFilter) {
+            return (
+              <InputFilter
+                selectValue={parentStateValues.condition[columnName.field] ?? ""}
+                inputValue={parentStateValues.search[columnName.field] ?? ""}
+                parentChangeHandler={(e) => {
+                  if(parentInputSearchHandler)
+                    parentInputSearchHandler(e)
+                  }
+                } 
+                key={`inputFilter[${columnName.field}]`}
+                columnName={columnName}
+              />
+            )
+          } else {
+            return <div></div>
+          }
         }) : ""
       }
     </DivLikeThead>
