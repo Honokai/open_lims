@@ -1,12 +1,10 @@
-import { ArrowDownward } from "@mui/icons-material";
-import { IconButton, Checkbox, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import Skeleton from '@mui/material/Skeleton';
 import React from "react";
 import { conditionalComparison, shouldOrder, whereIn } from "../../Helpers/Functions";
 import { dataListType, DataPropsGeneric, GenericObjectKeyType, TableProps, TableStateProps } from "../../Helpers/TypeHelpers";
-import { InputFilter } from "./InputsFilter";
 import ButtonLoading from "./ButtonLoading";
-import { DivContentTable, DivLikeRow, DivLikeTable, DivLikeTbody, DivLikeThead } from "../../Helpers/StyledTags";
+import { DivContentTable, DivLikeRow, DivLikeTable, DivLikeTbody} from "../../Helpers/StyledTags";
 import { TableRow } from "./TableRow";
 import { useNavigate } from "react-router-dom";
 import { TableHead } from "./TableHead";
@@ -140,9 +138,12 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
     navigate("/sample/createv2", {state: { schedules: whereIn('id', marked, data.filteredList) ?? null}})
   }
 
-  function editableHandler(idItem: number, column: string, value: string)
+  function editableHandler(idItem: number, column: string, value: string, createNew?: boolean)
   {
-    console.log(idItem, column, value)
+    console.log(idItem, column, value, createNew)
+    // let d = data.filteredList.forEach(i => {
+    //   console.log(i)
+    // })
   }
 
   return (
@@ -159,12 +160,15 @@ const Table = ({ rowData, sortable, theme, showCheckbox, entity, editable, searc
         checkBoxHandler={showCheckbox ? handleCheckBox : undefined}
         orderingHandler={ordering}
       />
-      <TableFilters entity={entity}
-        searchable={searchable}
-        showCheckbox={showCheckbox}
-        parentInputSearchHandler={handleInputSearch}
-        parentStateValues={componentState}
-      />
+      { 
+        searchable ?
+          <TableFilters entity={entity}
+            searchable={searchable}
+            showCheckbox={showCheckbox}
+            parentInputSearchHandler={handleInputSearch}
+            parentStateValues={componentState}
+          /> : <></>
+      }
       <DivLikeTbody id="tableBody" ref={tableBody}>
       {
         data.filteredList.length > 0 ?

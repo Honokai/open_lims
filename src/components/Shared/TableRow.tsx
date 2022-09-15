@@ -10,7 +10,7 @@ interface RowProps {
   editable?: boolean
   checked?: boolean
   handleCheckBox?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  contentEditableHandler?: (id: number, column: string, value: string) => void
+  contentEditableHandler?: (id: number, column: string, value: string, createNew?: boolean) => void
 }
 
 export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, editable, contentEditableHandler}: RowProps) => {
@@ -27,17 +27,30 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, ed
     setDataEditable({...dataEditable, value: e.target.value})
   }
 
-  function onBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>)
+  function onBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>, id: number)
   {
-    if (contentEditableHandler !== undefined && item.id) {
-      clearTimeout(timer)
-
-      let t = setTimeout(() => {
-        contentEditableHandler(Number(item.id), dataEditable.column, dataEditable.value)
-        setDataEditable({column: "", value: ""})
-      }, 1000, e)
+    console.log('iiii')
+    if (contentEditableHandler !== undefined) {
+      if (id > 0) {
+        clearTimeout(timer)
   
-      setTimer(t)
+        let t = setTimeout(() => {
+          contentEditableHandler(id, dataEditable.column, dataEditable.value)
+          setDataEditable({column: "", value: ""})
+        }, 1000, e)
+    
+        setTimer(t)
+      } else if (id === -1) {
+        clearTimeout(timer)
+  
+        let t = setTimeout(() => {
+          contentEditableHandler(id, dataEditable.column, dataEditable.value, true)
+          setDataEditable({column: "", value: ""})
+        }, 1000, e)
+    
+        setTimer(t)
+      }
+      
     }
   }
 
@@ -66,13 +79,13 @@ export const TableRow = ({showCheckbox, index, item, handleCheckBox, checked, ed
         Object.entries(item).map((v, i) => {
           if (dataEditable.column === v[0]) {
             return (
-              <DivContentTable key={`rowContent[${index}][${i}]`} id={`${v[0]}[${item.id}][${i}]`}>
+              <DivContentTable key={`rowContent[${index}][${i}]`} id={`${v[0]}[${item.id ?? index}][${i}]`}>
                 <TextField
                   size="small"
                   hiddenLabel
                   value={dataEditable.value ?? v[0]}
                   onChange={(e) => onChange(e)}
-                  onBlur={(e) => onBlur(e)}
+                  onBlur={(e) => onBlur(e, item.id ? Number(item.id) : -1)}
                 />
               </DivContentTable>
             )

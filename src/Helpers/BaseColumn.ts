@@ -1,4 +1,4 @@
-import { DataFieldType } from "./TypeHelpers"
+import { DataFieldType, GenericObjectKeyType } from "./TypeHelpers"
 
 export class BaseColumn {
   public conditionFilter: string[] = ['contains', 'starts_with', 'ends_with', 'equal', 'not_equal']
@@ -17,5 +17,14 @@ export class BaseColumn {
   public getDataFields()
   {
     return this.dataFields;
+  }
+
+  public createSelfEmpty()
+  {
+    let r: GenericObjectKeyType = {}
+    this.dataFields.forEach(i => {
+      r[i.field] = "fill in"
+    })
+    return r
   }
 }

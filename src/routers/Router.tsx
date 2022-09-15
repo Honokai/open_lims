@@ -9,6 +9,7 @@ import { TableContextProvider } from "../contexts/useTable";
 import { ThemeContextProvider } from "../contexts/useTheme";
 import UserList from "../components/Users/UserList";
 import { CreateV2 } from "../components/Sample/CreateV2";
+import { PreSampleCreate } from "../components/PreSample";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
             <Route path="/" element={<Home/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
+            <Route path="/presample" element={<PreSampleCreate/>}/>
             <Route path="sample">
               <Route path="schedule" element={<SampleCreate/>}/>
               <Route path="create" element={<SampleCreate/>}/>

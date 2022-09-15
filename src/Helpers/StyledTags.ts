@@ -13,6 +13,7 @@ export const DivContentTable = styled.div`
 
 export const DivLikeTable = styled.div`
   height: 100%;
+  max-height: max-content;
   min-width: 500px;
   display: flex;
   margin: 0 1rem;
@@ -26,7 +27,7 @@ export const DivLikeTable = styled.div`
 export const DivLikeThead = styled.div`
   padding: .3rem 0;
   display: flex;
-  // flex: 1;
+  flex: 1;
   text-align: center;
   border-bottom: 2px solid gray;
   & * {
@@ -35,17 +36,17 @@ export const DivLikeThead = styled.div`
 `
 
 export const DivLikeTbody = styled.div`
-  // flex: 1
   margin: .3rem 0;
   display: flex;
-  height: 70%;
+  flex: 12;
+  // height: 70%;
   flex-direction: column;
   text-align: center;
   overflow: auto;
+  scrollbar-color: rebeccapurple green;
 `
 
 export const DivLikeRow = styled.div`
-  // flex: 12;
   display: flex;
   border-radius: 0.2rem;
 `
